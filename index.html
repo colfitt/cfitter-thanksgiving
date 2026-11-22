@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thanksgiving 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: two plain pages on one sheet. Page one is a restaurant menu (dish, dotted leader, price,
+   one italic line, a quiet line for who and the recipe). Page two is the ingredient list by dish. */
+:root {
+  --paper: #fbf8f1; --ink: #2a2422; --soft: #6b615a; --faint: #a99d90; --rule: #d8ccbd; --accent: #7a2e2a;
+  --display: "Cormorant Garamond", Garamond, "Times New Roman", serif;
+  --body: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #1a1716; --ink: #ece4d6; --soft: #b3a796; --faint: #7c7266; --rule: #3f362f; --accent: #d9897f; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #1a1716; --ink: #ece4d6; --soft: #b3a796; --faint: #7c7266; --rule: #3f362f; --accent: #d9897f; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { background: var(--paper); }
+body { color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+a { color: inherit; }
+.sheet { max-width: 560px; margin: 0 auto; }
+
+/* Bar that drops in once the tabs scroll away */
+.mini { position: fixed; top: 0; left: 0; right: 0; z-index: 20; background: var(--paper); border-bottom: 1px solid var(--rule); transform: translateY(-105%); visibility: hidden; }
+.mini.on { transform: none; visibility: visible; }
+.mini-in { position: relative; max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 8px;
+  padding: max(6px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 6px max(16px, env(safe-area-inset-left, 0px)); }
+.turkey.sm { width: 32px; height: 32px; }
+.mini-title { text-align: center; font-family: var(--display); font-size: 1.05rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-btn { justify-self: end; width: 40px; height: 40px; padding: 8px; border: 0; background: none; color: var(--ink); cursor: pointer; border-radius: 4px; }
+.mini-btn svg { display: block; width: 24px; height: 24px; }
+.mini-btn:focus-visible, .mini-menu a:focus-visible { outline: 1px dotted var(--accent); outline-offset: 2px; }
+.mini-menu { position: absolute; top: 100%; right: max(16px, env(safe-area-inset-right, 0px)); min-width: 168px; background: var(--paper); border: 1px solid var(--rule); padding: 8px 0; display: flex; flex-direction: column; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+.mini-menu[hidden] { display: none; }
+.mini-menu a { padding: 8px 18px; font-variant: small-caps; text-transform: lowercase; letter-spacing: .16em; font-size: 15px; color: var(--soft); text-decoration: none; }
+.mini-menu a[aria-current="page"] { color: var(--ink); }
+.mini-menu a:hover { color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) { .mini { transition: transform .25s ease, visibility .25s; } }
+.top { color: var(--ink); margin: -8px 0 18px; }
+.band { display: block; width: 100%; height: 34px; opacity: .85; }
+.topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 44px; }
+.topbar[hidden] { display: none; }
+.turkey { flex: none; width: 40px; height: 40px; color: var(--ink); }
+nav { flex: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 24px; }
+nav a { font-variant: small-caps; text-transform: lowercase; letter-spacing: .16em; font-size: 15px; color: var(--faint); text-decoration: none; padding-bottom: 3px; border-bottom: 1px solid transparent; }
+nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+nav a:focus-visible, .q a:focus-visible { outline: 1px dotted var(--accent); outline-offset: 3px; }
+
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 10vw, 3.4rem); line-height: 1; letter-spacing: .04em; text-align: center; margin: 0 0 40px; }
+h2 { font-family: var(--display); font-weight: 500; font-size: 1.05rem; letter-spacing: .32em; text-transform: uppercase; text-align: center; margin: 0 0 20px; color: var(--soft); }
+section.course + section.course { margin-top: 40px; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+.menu li { margin-bottom: 20px; }
+.line { display: flex; align-items: baseline; gap: 8px; }
+.name { font-family: var(--display); font-weight: 500; font-size: 1.32rem; line-height: 1.2; min-width: 0; }
+.dots { flex: 1; border-bottom: 1px dotted var(--faint); transform: translateY(-5px); min-width: 16px; }
+.price { font-family: var(--display); font-size: 1.2rem; font-variant-numeric: lining-nums; white-space: nowrap; }
+.desc { font-style: italic; color: var(--soft); margin: 2px 0 0; font-size: 15.5px; }
+.q { font-size: 13px; color: var(--faint); margin-top: 2px; }
+.q a { color: var(--faint); text-underline-offset: 2px; }
+.q a:hover { color: var(--accent); }
+.q .unsure { font-style: italic; }
+.q .by { font-style: italic; }
+.nr { font-family: var(--body); font-size: 13px; font-style: italic; font-weight: 400; color: var(--faint); letter-spacing: 0; text-transform: none; }
+.desc .aside { font-size: 12.5px; }
+.nut { font-size: 13px; margin-top: 3px; color: var(--soft); }
+.nut::before { content: "Tree nuts · "; font-variant: small-caps; text-transform: lowercase; letter-spacing: .1em; }
+.nut.has { color: var(--accent); font-weight: 500; }
+.fine { text-align: center; font-size: 13px; color: var(--faint); font-style: italic; margin-top: 44px; }
+
+/* Ingredients */
+.ing section { padding: 16px 0; border-top: 1px solid var(--rule); }
+.ing section:last-of-type { border-bottom: 1px solid var(--rule); }
+.ing .head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.ing h3 { font-family: var(--display); font-weight: 500; font-size: 1.25rem; margin: 0; min-width: 0; }
+.ing .who { font-size: 13px; color: var(--faint); white-space: nowrap; }
+.ing li { display: flex; gap: 10px; align-items: baseline; padding: 2px 0; }
+.ing li::before { content: ""; flex: none; width: 10px; height: 10px; border: 1px solid var(--soft); transform: translateY(1px); }
+.ing li.opt { color: var(--soft); }
+.ing li.opt::before { border-style: dashed; }
+.ing .pending { font-style: italic; color: var(--faint); font-size: 15px; margin: 0; }
+.ing .pending::before { display: none; }
+
+.plan { text-align: center; color: var(--soft); font-size: 15px; margin: 0 auto 36px; max-width: 40ch; }
+.pies { margin-bottom: 36px; }
+.ing .pies li { display: block; padding: 0; }
+.ing .pies li::before { content: none; }
+.pies section.course { border: 0; padding: 0; }
+.sub { text-align: center; font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--soft); margin: -28px 0 32px; }
+.view { display: flex; justify-content: center; gap: 24px; margin: -16px 0 28px; }
+.view button { font: inherit; font-variant: small-caps; text-transform: lowercase; letter-spacing: .14em; font-size: 15px; background: none; border: 0; border-bottom: 1px solid transparent; padding: 0 0 3px; color: var(--faint); cursor: pointer; }
+.view button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.view button:focus-visible { outline: 1px dotted var(--accent); outline-offset: 3px; }
+.ing li .x { min-width: 0; }
+.ing li .from { margin-left: auto; padding-left: 12px; font-size: 13px; color: var(--faint); text-align: right; max-width: 45%; }
+@media (prefers-reduced-motion: no-preference) {
+  .anim .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0ms); }
+  .anim .reveal.in { opacity: 1; transform: none; }
+  .anim .menu li.reveal .dots { transform: scaleX(0); transform-origin: left; transition: transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--d, 0ms) + 200ms); }
+  .anim .menu li.reveal.in .dots { transform: scaleX(1); }
+  .anim .enter h1 { animation: title-in .9s cubic-bezier(.2,.7,.2,1) both; }
+  .anim .enter .sub, .anim .enter .view { animation: fade-in .8s .25s ease both; }
+  @keyframes title-in { from { opacity: 0; letter-spacing: .2em; filter: blur(3px); } to { opacity: 1; letter-spacing: .04em; filter: none; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  nav a { transition: color .3s, border-color .3s; }
+}
+.ing h2.sub { font-family: var(--display); font-weight: 400; font-size: 1.9rem; letter-spacing: .04em; text-align: center; margin: 44px 0 16px; }
+.note { margin-top: 40px; font-size: 14px; color: var(--soft); }
+.note h3 { font-family: var(--display); font-weight: 500; font-size: 1rem; letter-spacing: .24em; text-transform: uppercase; margin: 0 0 8px; color: var(--soft); }
+.note p { margin: 0 0 8px; }
+.note ul li { padding-left: 14px; position: relative; margin-bottom: 4px; }
+.note ul li::before { content: "·"; position: absolute; left: 2px; }
+.diet { max-width: 560px; margin: 48px auto 0; font-size: 14.5px; line-height: 1.5; color: var(--soft); }
+.diet h2 { font-family: var(--display); font-weight: 500; font-size: 1.15rem; color: var(--ink); margin: 0 0 8px; }
+.diet p { margin: 0 0 6px; }
+.diet b { color: var(--ink); font-weight: 500; }
+.kitty { width: min(320px, 80%); aspect-ratio: 521 / 181; margin: 28px auto 0; background: var(--ink);
+  -webkit-mask: url("data:image/png;base64,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") center / contain no-repeat; mask: url("data:image/png;base64,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") center / contain no-repeat; }
+
+/* Recipe pages */
+.back { display: inline-block; font-variant: small-caps; text-transform: lowercase; letter-spacing: .16em; font-size: 15px; color: var(--soft); text-decoration: none; margin-bottom: 32px; padding: 4px 0; }
+.back:hover { color: var(--accent); }
+.back:focus-visible, a.rl:focus-visible { outline: 1px dotted var(--accent); outline-offset: 3px; }
+.back.bottom { margin: 44px 0 0; }
+.recipe h1 { font-size: clamp(2rem, 8vw, 2.8rem); line-height: 1.1; margin-bottom: 18px; }
+.recipe .sub { margin: 0 0 14px; font-size: 1.1rem; }
+.rmeta { text-align: center; font-size: 13px; color: var(--faint); margin: 0 0 8px; letter-spacing: .04em; }
+.rmeta a { color: var(--faint); text-underline-offset: 2px; }
+.rsec { border-top: 1px solid var(--rule); padding-top: 24px; margin-top: 32px; }
+.rsec h3 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.15rem; margin: 18px 0 6px; color: var(--soft); }
+.ringr li { padding: 5px 0; border-bottom: 1px dotted var(--rule); }
+.ringr li:last-child { border-bottom: 0; }
+.rsteps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.rsteps li { counter-increment: s; display: grid; grid-template-columns: 2em 1fr; margin-bottom: 16px; }
+.rsteps li::before { content: counter(s); font-family: var(--display); font-size: 1.35rem; line-height: 1.15; color: var(--accent); font-variant-numeric: lining-nums; }
+.rnote { font-size: 15.5px; color: var(--soft); font-style: italic; margin: 0 0 8px; }
+.rcard { white-space: pre-line; font-style: italic; color: var(--soft); font-size: 15.5px; margin: 0; }
+.rnutr { display: grid; grid-template-columns: 1fr auto; gap: 3px 16px; font-size: 14px; color: var(--soft); margin: 0; }
+.rnutr dt { margin: 0; } .rnutr dd { margin: 0; text-align: right; font-variant-numeric: lining-nums; }
+a.rl { text-decoration: underline dotted; text-decoration-color: var(--faint); text-decoration-thickness: 1px; text-underline-offset: 5px; }
+.desc a.rl { text-underline-offset: 3px; }
+a.rl:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+
+<div class="sheet">
+  <div class="mini" id="mini"><div class="mini-in"><svg class="turkey sm" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5.96 32.47 A3.9 3.9 0 0 1 5.32 23.83 A3.9 3.9 0 0 1 9.27 16.12 A3.9 3.9 0 0 1 16.67 11.6 A3.9 3.9 0 0 1 25.33 11.6 A3.9 3.9 0 0 1 32.73 16.12 A3.9 3.9 0 0 1 36.68 23.83 A3.9 3.9 0 0 1 36.04 32.47"/><path d="M14.14 25.61 L7.28 24.23"/><path d="M15.87 22.24 L10.74 17.48"/><path d="M19.1 20.26 L17.21 13.52"/><path d="M22.9 20.26 L24.79 13.52"/><path d="M26.13 22.24 L31.26 17.48"/><path d="M27.86 25.61 L34.72 24.23"/><ellipse cx="21" cy="32" rx="9" ry="7.5" fill="var(--paper)"/><path d="M15 31 q4 3 9 1"/><path d="M27 29 C30 25 28 21 30 17"/><circle cx="31.5" cy="15" r="3.2" fill="var(--paper)"/><path d="M34.6 14.4 L37.4 15.4 L34.4 16.4"/><path d="M33.6 17.4 q1 2.6 -0.6 4"/><circle cx="32.2" cy="14.2" r=".5" fill="currentColor" stroke="none"/><path d="M18.5 39.3 L18 44 M16 44 L20 44 M23.5 39.3 L24 44 M22 44 L26 44"/></g></svg><span class="mini-title" id="mini-title"></span><button type="button" class="mini-btn" id="mini-btn" aria-expanded="false" aria-controls="mini-menu" aria-label="Pages"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button><div class="mini-menu" id="mini-menu" hidden><a href="#picks" data-k="picks">Giving</a><a href="#menu" data-k="menu">Menu</a><a href="#ingredients" data-k="ingredients">Ingredients</a><a href="#friday" data-k="friday">Friday</a><a href="#saturday" data-k="saturday">Saturday</a><a href="#pizza" data-k="pizza">Sunday</a></div></div></div>
+  <header class="top"><svg class="band" id="band" viewBox="0 -2 560 42" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path vector-effect="non-scaling-stroke" d="M0 7.2 L8 7.8 L16 8.3 L24 8.7 L32 8.9 L40 9.0 L48 9.0 L56 9.0 L64 8.8 L72 8.7 L80 8.6 L88 8.5 L96 8.4 L104 8.5 L112 8.6 L120 8.7 L128 8.9 L136 9.1 L144 9.3 L152 9.4 L160 9.5 L168 9.4 L176 9.2 L184 8.9 L192 8.5 L200 7.9 L208 7.2 L216 6.5 L224 5.7 L232 4.9 L240 4.1 L248 3.4 L256 2.9 L264 2.4 L272 2.2 L280 2.1 L288 2.1 L296 2.3 L304 2.6 L312 3.0 L320 3.4 L328 3.9 L336 4.3 L344 4.7 L352 5.0 L360 5.2 L368 5.3 L376 5.3 L384 5.3 L392 5.2 L400 5.2 L408 5.1 L416 5.1 L424 5.1 L432 5.2 L440 5.4 L448 5.8 L456 6.2 L464 6.6 L472 7.1 L480 7.7 L488 8.1 L496 8.6 L504 8.9 L512 9.1 L520 9.1 L528 9.0 L536 8.8 L544 8.4 L552 7.9 L560 7.3"/><path vector-effect="non-scaling-stroke" d="M0 12.6 L8 13.3 L16 13.9 L24 14.2 L32 14.5 L40 14.5 L48 14.5 L56 14.3 L64 14.1 L72 13.8 L80 13.6 L88 13.4 L96 13.3 L104 13.2 L112 13.3 L120 13.4 L128 13.5 L136 13.7 L144 13.8 L152 13.9 L160 13.9 L168 13.8 L176 13.5 L184 13.1 L192 12.5 L200 11.8 L208 11.0 L216 10.0 L224 9.0 L232 8.1 L240 7.1 L248 6.3 L256 5.7 L264 5.2 L272 4.9 L280 4.8 L288 4.9 L296 5.2 L304 5.6 L312 6.2 L320 6.8 L328 7.4 L336 8.0 L344 8.5 L352 9.0 L360 9.3 L368 9.5 L376 9.7 L384 9.7 L392 9.7 L400 9.7 L408 9.7 L416 9.7 L424 9.8 L432 10.1 L440 10.4 L448 10.8 L456 11.4 L464 12.0 L472 12.7 L480 13.3 L488 13.9 L496 14.5 L504 14.9 L512 15.1 L520 15.2 L528 15.0 L536 14.7 L544 14.2 L552 13.6 L560 12.8"/><path vector-effect="non-scaling-stroke" d="M0 17.6 L8 18.4 L16 19.0 L24 19.4 L32 19.5 L40 19.5 L48 19.4 L56 19.1 L64 18.8 L72 18.4 L80 18.1 L88 17.8 L96 17.5 L104 17.4 L112 17.4 L120 17.5 L128 17.6 L136 17.8 L144 18.0 L152 18.0 L160 18.0 L168 17.9 L176 17.6 L184 17.1 L192 16.4 L200 15.6 L208 14.6 L216 13.6 L224 12.4 L232 11.3 L240 10.3 L248 9.4 L256 8.7 L264 8.2 L272 7.9 L280 7.9 L288 8.1 L296 8.5 L304 9.1 L312 9.8 L320 10.6 L328 11.4 L336 12.2 L344 12.9 L352 13.5 L360 14.0 L368 14.3 L376 14.6 L384 14.7 L392 14.7 L400 14.7 L408 14.8 L416 14.9 L424 15.0 L432 15.3 L440 15.7 L448 16.2 L456 16.9 L464 17.6 L472 18.3 L480 19.1 L488 19.8 L496 20.4 L504 20.8 L512 21.1 L520 21.1 L528 20.9 L536 20.4 L544 19.8 L552 18.9 L560 18.0"/><path vector-effect="non-scaling-stroke" d="M0 22.2 L8 23.0 L16 23.5 L24 23.9 L32 24.1 L40 24.0 L48 23.8 L56 23.4 L64 23.0 L72 22.5 L80 22.1 L88 21.7 L96 21.5 L104 21.3 L112 21.3 L120 21.4 L128 21.6 L136 21.8 L144 22.0 L152 22.1 L160 22.2 L168 22.1 L176 21.8 L184 21.2 L192 20.5 L200 19.6 L208 18.6 L216 17.4 L224 16.2 L232 15.1 L240 14.0 L248 13.0 L256 12.3 L264 11.8 L272 11.5 L280 11.6 L288 11.9 L296 12.4 L304 13.2 L312 14.1 L320 15.0 L328 16.0 L336 17.0 L344 17.8 L352 18.6 L360 19.1 L368 19.5 L376 19.8 L384 20.0 L392 20.0 L400 20.0 L408 20.1 L416 20.1 L424 20.3 L432 20.6 L440 21.0 L448 21.6 L456 22.3 L464 23.0 L472 23.8 L480 24.7 L488 25.4 L496 26.0 L504 26.4 L512 26.6 L520 26.6 L528 26.2 L536 25.6 L544 24.8 L552 23.8 L560 22.6"/><path vector-effect="non-scaling-stroke" d="M0 26.2 L8 27.0 L16 27.7 L24 28.1 L32 28.2 L40 28.2 L48 27.9 L56 27.5 L64 27.0 L72 26.5 L80 26.0 L88 25.7 L96 25.4 L104 25.3 L112 25.3 L120 25.5 L128 25.7 L136 26.1 L144 26.3 L152 26.6 L160 26.7 L168 26.6 L176 26.4 L184 25.9 L192 25.2 L200 24.2 L208 23.1 L216 21.9 L224 20.6 L232 19.3 L240 18.1 L248 17.1 L256 16.3 L264 15.8 L272 15.6 L280 15.7 L288 16.1 L296 16.8 L304 17.6 L312 18.7 L320 19.8 L328 20.9 L336 22.0 L344 22.9 L352 23.7 L360 24.4 L368 24.8 L376 25.1 L384 25.2 L392 25.2 L400 25.2 L408 25.1 L416 25.2 L424 25.3 L432 25.5 L440 26.0 L448 26.5 L456 27.2 L464 28.0 L472 28.9 L480 29.7 L488 30.4 L496 31.1 L504 31.5 L512 31.6 L520 31.5 L528 31.0 L536 30.3 L544 29.3 L552 28.1 L560 26.7"/><path vector-effect="non-scaling-stroke" d="M0 30.0 L8 31.0 L16 31.7 L24 32.2 L32 32.4 L40 32.4 L48 32.1 L56 31.7 L64 31.2 L72 30.7 L80 30.3 L88 29.9 L96 29.7 L104 29.7 L112 29.8 L120 30.0 L128 30.4 L136 30.8 L144 31.2 L152 31.6 L160 31.8 L168 31.8 L176 31.5 L184 31.1 L192 30.3 L200 29.3 L208 28.1 L216 26.8 L224 25.4 L232 24.0 L240 22.7 L248 21.6 L256 20.8 L264 20.2 L272 20.0 L280 20.1 L288 20.5 L296 21.2 L304 22.2 L312 23.3 L320 24.5 L328 25.7 L336 26.8 L344 27.8 L352 28.7 L360 29.3 L368 29.7 L376 30.0 L384 30.0 L392 30.0 L400 29.9 L408 29.7 L416 29.7 L424 29.7 L432 30.0 L440 30.3 L448 30.9 L456 31.6 L464 32.4 L472 33.3 L480 34.2 L488 35.0 L496 35.6 L504 36.0 L512 36.1 L520 36.0 L528 35.5 L536 34.6 L544 33.5 L552 32.1 L560 30.6"/></g></svg></header>
+  <div class="topbar"><svg class="turkey" viewBox="0 0 48 48" role="img" aria-label="A turkey"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5.96 32.47 A3.9 3.9 0 0 1 5.32 23.83 A3.9 3.9 0 0 1 9.27 16.12 A3.9 3.9 0 0 1 16.67 11.6 A3.9 3.9 0 0 1 25.33 11.6 A3.9 3.9 0 0 1 32.73 16.12 A3.9 3.9 0 0 1 36.68 23.83 A3.9 3.9 0 0 1 36.04 32.47"/><path d="M14.14 25.61 L7.28 24.23"/><path d="M15.87 22.24 L10.74 17.48"/><path d="M19.1 20.26 L17.21 13.52"/><path d="M22.9 20.26 L24.79 13.52"/><path d="M26.13 22.24 L31.26 17.48"/><path d="M27.86 25.61 L34.72 24.23"/><ellipse cx="21" cy="32" rx="9" ry="7.5" fill="var(--paper)"/><path d="M15 31 q4 3 9 1"/><path d="M27 29 C30 25 28 21 30 17"/><circle cx="31.5" cy="15" r="3.2" fill="var(--paper)"/><path d="M34.6 14.4 L37.4 15.4 L34.4 16.4"/><path d="M33.6 17.4 q1 2.6 -0.6 4"/><circle cx="32.2" cy="14.2" r=".5" fill="currentColor" stroke="none"/><path d="M18.5 39.3 L18 44 M16 44 L20 44 M23.5 39.3 L24 44 M22 44 L26 44"/></g></svg><nav aria-label="Pages"><a href="#picks" id="tab-picks">Giving</a><a href="#menu" id="tab-menu">Menu</a><a href="#ingredients" id="tab-ingredients">Ingredients</a><a href="#friday" id="tab-friday">Friday</a><a href="#saturday" id="tab-saturday">Saturday</a><a href="#pizza" id="tab-pizza">Sunday</a></nav></div>
+
+  <div id="page-picks" class="menu" hidden>
+    <h1>It&rsquo;s Giving</h1>
+    <section class="course"><h2>Universally Chosen</h2><ul>
+      <li><div class="line"><span class="name">Pumpkin Pie</span></div></li>
+      <li><div class="line"><a class="name rl" href="#r-turkey">Turkey</a></div></li>
+      <li><div class="line"><a class="name rl" href="#r-muffs">Stuffing</a></div></li>
+      <li><div class="line"><a class="name rl" href="#r-gravy">Gravy</a></div></li>
+      <li><div class="line"><a class="name rl" href="#r-greenbean">Green Bean Salad</a></div></li>
+      <li><div class="line"><a class="name rl" href="#r-mashed">Mashed Potatoes</a></div></li>
+      <li><div class="line"><span class="name">Chocolate Chip Cookies</span></div></li>
+    </ul></section>
+    <section class="course"><h2>By Choice</h2><ul>
+      <li><div class="line"><span class="name">Jeff</span></div><p class="desc">Brussels sprouts</p></li>
+      <li><div class="line"><span class="name">Bryan</span></div><p class="desc">Cherry pie</p></li>
+      <li><div class="line"><span class="name">Katie</span></div><p class="desc"><a class="rl" href="#r-eggs">Deegs</a></p></li>
+      <li><div class="line"><span class="name">Colin</span></div><p class="desc"><a class="rl" href="#r-pie">Coconut pumpkin pie</a></p></li>
+      <li><div class="line"><span class="name">Ashley</span></div><p class="desc"><a class="rl" href="#r-yams">Whiskey braised yams</a></p></li>
+      <li><div class="line"><span class="name">Roman</span></div><p class="desc"><a class="rl" href="#r-veggie">The veggie plate</a> and the rolls</p></li>
+      <li><div class="line"><span class="name">Rachel</span></div><p class="desc">&ldquo;chose&rdquo; kale salad and <a class="rl" href="#r-soup">butternut squash soup</a></p></li>
+      <li><div class="line"><span class="name">Benny</span></div><p class="desc">Was not asked, but I&rsquo;m sure he would have suggested something like Tartiflette</p></li>
+      <li><div class="line"><span class="name">Laura</span></div><p class="desc"><a class="rl" href="#r-pineapple">Pineapple stuffing</a></p></li>
+      <li><div class="line"><span class="name">Chuck</span></div><p class="desc">Was not asked, but I&rsquo;m sure he would have suggested something like Japanese cheesecake</p></li>
+      <li><div class="line"><span class="name">Baby Autumn</span></div><p class="desc">Formula <small class="aside">(9 months old)</small></p></li>
+      <li><div class="line"><span class="name">Toby</span></div><p class="desc">Organic pumpkin pur&eacute;e <small class="aside">(a dog)</small></p></li>
+      <li><div class="line"><span class="name">Gigi</span></div><p class="desc">Treats <small class="aside">(also a dog)</small></p></li>
+      <li><div class="line"><span class="name">Sandy</span></div><p class="desc">&ldquo;Chose&rdquo; not cooking <small class="aside">(and being asked a hundred times where everything is in her kitchen)</small>. She&rsquo;ll end up stepping in anyway, because she is her</p></li>
+    </ul></section>
+  </div>
+
+  <div id="page-menu" class="menu">
+    <h1>Thanksgiving</h1>
+    <div id="courses"></div>
+    <section class="diet" aria-label="Dietary notes">
+      <h2>Dietary notes</h2>
+      <p><b>Gluten free:</b> turkey, mushroom gravy, Deegs, charcuterie, veggie plate, butternut squash soup, whiskey yams, mashed potatoes, pineapple stuffing, green bean salad, pumpkin haupia pie, chocolate chip cookies, ice cream, whipped cream.</p>
+      <p><b>Gluten free and dairy free:</b> Deegs, veggie plate if the dip is dairy free, green bean salad. Substitutions on dairy can be decided on day of.</p>
+      <p><b>Vegetarian:</b> everything except the turkey, turkey gravy and salami. The mushroom gravy is made with mushroom stock.</p>
+      <p><b>Nutless.</b> (Except for the cashew dressing on the kale salad)</p>
+    </section>
+  </div>
+
+  <div id="page-friday" class="menu" hidden>
+    <h1>Leftovers</h1>
+    <div class="kitty" role="img" aria-label="A cat lying flat"></div>
+  </div>
+
+  <div id="page-saturday" class="menu" hidden>
+    <h1>Barbeque</h1>
+    <p class="sub">Saturday, November 28</p>
+    <section class="course">
+      <h2>From Kings Creek</h2>
+        <ul>
+          <li><div class="line"><span class="name">Smoked Brisket</span></div></li>
+          <li><div class="line"><span class="name">Portobello Cap</span></div><p class="desc">Stuffed with quinoa and roasted vegetables</p></li>
+          <li><div class="line"><span class="name">Macaroni and Cheese</span></div></li>
+          <li><div class="line"><span class="name">Baked Beans</span></div></li>
+          <li><div class="line"><span class="name">Coleslaw</span></div></li>
+          <li><div class="line"><span class="name">Cupcakes</span></div></li>
+        </ul>
+    </section>
+    <p class="fine">All ordered from Kings Creek Country Club and picked up. No cooking.</p>
+  </div>
+
+  <div id="page-pizza" class="ing" hidden>
+    <h1>Pizza Party</h1>
+    <p class="sub">Sunday, November 29</p>
+
+    <div class="menu pies">
+      <section class="course">
+        <h2>The Pies</h2>
+        <ul>
+          <li><div class="line"><span class="name">Margherita</span></div><p class="desc">Bianco DiNapoli crushed tomatoes, fresh mozzarella</p></li>
+          <li><div class="line"><span class="name">Spicy Meat</span></div><p class="desc">Spicy meat, fresh mozzarella</p></li>
+          <li><div class="line"><span class="name">Burrata Salad</span></div><p class="desc">Colin&rsquo;s garlic rosemary white sauce, fresh mozzarella, cherry tomatoes and burrata on top</p></li>
+          <li><div class="line"><span class="name">Leftover Barbecue</span></div><p class="desc">Leftover brisket, low moisture mozzarella</p></li>
+        </ul>
+      </section>
+      <section class="course">
+        <h2>Gluten Free</h2>
+        <ul>
+          <li><div class="line"><span class="name">The Special</span></div><p class="desc">Margherita base of Bianco DiNapoli crushed tomatoes, with garlic, onion, pineapple, broccoli and spicy mayo, Buf buffalo mozzarella</p></li>
+          <li><div class="line"><span class="name">Swiss Chard</span></div><p class="desc">Prosciutto and spicy salami, Buf buffalo mozzarella</p></li>
+        </ul>
+      </section>
+      <section class="course">
+        <h2>On the Side</h2>
+        <ul>
+          <li><div class="line"><span class="name">Wings</span></div><p class="desc">Buffalo or Sriracha garlic</p></li>
+        </ul>
+      </section>
+      <section class="course">
+        <h2>Drinks</h2>
+        <ul>
+          <li><div class="line"><span class="name">Water</span></div><p class="desc">Bottled</p></li>
+          <li><div class="line"><span class="name">Soda and Seltzer</span></div><p class="desc">A few cans of each</p></li>
+          <li><div class="line"><span class="name">BYOB</span></div><p class="desc">Bring your own beer, wine or anything stronger</p></li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="view" role="group" aria-label="How to sort the list"><button type="button" data-view="recipe" aria-pressed="true">As listed</button><button type="button" data-view="aisle" aria-pressed="false">By aisle</button></div>
+    <div id="pizza-lists"></div>
+  </div>
+
+  <div id="page-ingredients" class="ing" hidden>
+    <h1>Ingredients</h1>
+    <div class="view" role="group" aria-label="How to sort the list"><button type="button" data-view="recipe" aria-pressed="true">By recipe</button><button type="button" data-view="aisle" aria-pressed="false">By aisle</button></div>
+    <div id="lists"></div>
+    <h2 class="sub">Pick up</h2>
+    <div id="pickup"></div>
+  </div>
+
+  <div id="page-recipe" class="recipe" hidden><div id="recipe"></div></div>
+</div>
+
+<script>
+(function () {
+  var MENU = [
+    { name: "Appetizer", items: [
+      { t: "Deegs", rec: "eggs", p: "$28", d: "Eggs, Duke's mayo, sweet relish, Durkee's dressing, salt, paprika", who: "Katie" },
+      { t: "Charcuterie", rec: "board", p: "$64", d: "Brie, XO gouda, salami, prosciutto", who: "Colin" },
+      { t: "Veggie Plate", rec: "veggie", p: "$22", d: "Carrots, cucumbers, celery, red pepper, dip", who: "Colin" },
+      { t: "Butternut Squash Soup", rec: "soup", p: "$26", d: "Thomas Keller's recipe. Roasted butternut squash, leeks, carrots, shallots, onion, garlic, vegetable stock, brown butter, crème fraîche, chives", who: "Sandy",
+        r: { label: "NYT Cooking", href: "https://cooking.nytimes.com/recipes/1857-thomas-kellers-butternut-squash-soup-with-brown-butter" } },
+      { t: "Kale Salad", p: "$23", d: "Shaved Brussels sprouts, kale, cabbage, butternut squash, apple, dried cranberries, pumpkin seeds, cashew dressing. From Peach Blossom Eatery, Newark", who: "Rachel" }
+    ]},
+    { name: "Main", items: [
+      { t: "Glazed and Lacquered Turkey", rec: "turkey", p: "$185", d: "Spatchcocked Hickman's turkey. Dry brine of bay, peppercorn, allspice, sage, salt and brown sugar. Tamari, sherry vinegar and brown sugar glaze", who: "Colin and Sandy",
+        r: { label: "Bon Appétit", href: "https://www.bonappetit.com/recipe/glazed-and-lacquered-roast-turkey" } }
+    ]},
+    { name: "Sides", items: [
+      { t: "Holiday Whiskey Yams", rec: "yams", p: "$24", d: "Yams baked with butter, brown sugar, raw sugar, cinnamon and nutmeg. Whiskey-soaked craisins and honey on the side. No nuts", who: "Colin" },
+      { t: "Mashed Potatoes", rec: "mashed", p: "$22", d: "Potatoes, butter, milk or cream", who: "Sandy" },
+      { t: "Stuffin' Muffs", rec: "muffs", p: "$19", d: "Boxed stuffing, baked as muffins", who: "Bryan, because we're forcing him to cook them" },
+      { t: "Pineapple Stuffing", rec: "pineapple", p: "$21", d: "Gluten free, with pineapple", who: "Laura" },
+      { t: "Brussels Sprouts", p: "$20", d: "They are brussel sprouts.", who: "Jeff" },
+      { t: "Green Bean Salad", rec: "greenbean", p: "$19", d: "Green bean and cherry tomato salad", 
+        r: { label: "Recipe Runner", href: "https://reciperunner.com/green-bean-tomato-salad-lemon-dijon-vinaigrette/" } },
+      { t: "Turkey Gravy", p: "$16", d: "Turkey gravy", who: "Peach Blossom Eatery" },
+      { t: "Mushroom Gravy", rec: "gravy", p: "$16", d: "Mushrooms, ground porcini, onion, garlic, butter, mushroom stock, balsamic, thyme. Thickened with cornstarch, so gluten free", who: "Colin" },
+      { t: "Rolls", p: "Market price", d: "Dinner rolls", who: "Jamie from Kings Creek Country Club" }
+    ]},
+    { name: "Dessert", items: [
+      { t: "Pumpkin Haupia Pie", rec: "pie", p: "$42", d: "Gluten free graham cracker and coconut crust, spiced pumpkin filling, coconut haupia layer, whipped cream", who: "Colin",
+        r: { label: "Serious Eats", href: "https://www.seriouseats.com/pumpkin-haupia-pie-12227490" } },
+      { t: "Pumpkin Pie", p: "$36", d: "Plain pumpkin pie", who: "Jamie from Kings Creek Country Club" },
+      { t: "Cherry Pie", p: "$38", d: "Cherry pie", who: "Jamie from Kings Creek Country Club" },
+      { t: "Chocolate Chip Cookies", p: "$18", d: "Gluten free", who: "Jamie from Kings Creek Country Club" },
+      { t: "Vanilla Ice Cream", p: "$14", d: "Vanilla ice cream" },
+      { t: "Whipped Cream", p: "$12", d: "Vanilla whipped cream", who: "Peach Blossom Eatery" }
+    ]},
+    { name: "Drinks", items: [
+      { t: "Full Bar", p: "$175 per guest", d: "Open during the starters" },
+      { t: "Wine", p: "$340", d: "With dinner. Red, with white available" },
+      { t: "Gin and Tonic", p: "$46", d: "Gin, tonic" },
+      { t: "Corpse Reviver No. 2", p: "$58", d: "Gin, lemon, absinthe" },
+      { t: "Aperol Spritz", p: "$44", d: "Aperol, prosecco, soda" },
+      { t: "Champagne", p: "$95 a glass", d: "By the glass" },
+      { t: "Beer", p: "$28", d: "Assorted" },
+      { t: "Tequila", p: "$52", d: "For mixed drinks" },
+      { t: "Whiskey and Bourbon", p: "$68", d: "Neat or on ice" },
+      { t: "Figure It Out", p: "$65 + 22% gratuity", d: "Pour your own. Self-service fee, and the bartender still expects a tip" }
+    ]}
+  ];
+
+  var LISTS = [
+    { t: "Deegs", rec: "eggs", who: "Katie", buyer: "Katie", items: ["12 eggs", "Duke's mayo", "Sweet relish", "Salt", "Durkee's dressing", "Paprika"] },
+    { t: "Charcuterie", rec: "board", who: "Colin", items: ["Brie", "XO gouda", "Salami", "Prosciutto"] },
+    { t: "Veggie plate", rec: "veggie", who: "Colin", items: ["Carrots", "Cucumbers", "Celery", "Red pepper", "Dip"] },
+    { t: "Mashed potatoes", rec: "mashed", who: "Sandy", items: ["1 lb potatoes", "Heavy cream", "2 garlic cloves", "Rosemary or sage", "Butter"] },
+    { t: "Stuffin' muffins", rec: "muffs", who: "Bryan", items: ["Boxed stuffing"] },
+    { t: "Pineapple gluten free stuffing", rec: "pineapple", who: "Laura", items: ["8 slices bread, for toast", "1 can pineapple chunks", "1 cup sugar", "3 eggs", "½ cup milk", "½ cup butter"] },
+    { t: "Kale salad", who: "Rachel", items: [], more: "Ready made from Peach Blossom Eatery in Newark." },
+    { t: "Green bean salad", rec: "greenbean", who: "", items: ["2 lb fresh green beans", "2 cups grape or cherry tomatoes", "2 shallots, for 4 tbsp minced", "2 lemons, for 4 tbsp juice", "Dijon mustard, less than 4 tbsp", "2 tbsp rice wine vinegar", "2 tbsp extra virgin olive oil", "1 tsp honey or agave", "2 small garlic cloves", "Salt and pepper"], more: "Recipe doubled to serve about 8. Go light on the mustard." },
+    { t: "Mushroom gravy", rec: "gravyday", who: "Colin", items: ["Reduced mushroom stock (from Colin)", "Butter", "3 tablespoons cornstarch", "6 tablespoons water or veggie stock"], more: "For the day of." },
+    { t: "Butternut squash soup", rec: "soup", who: "Sandy", buyer: "Sandy", items: ["1 butternut squash, 3 to 3½ lb", "2 tbsp canola oil", "Kosher salt and black pepper", "2 sprigs sage", "Leeks: 1 cup sliced, plus 2 green leaves", "½ cup sliced carrots", "½ cup sliced shallots", "½ cup sliced onions", "6 garlic cloves", "2 tbsp honey", "6 cups vegetable stock, plus a little extra", "8 sprigs thyme", "2 sprigs Italian parsley", "2 bay leaves", "½ tsp black peppercorns", "¼ cup crème fraîche", "Nutmeg", "4 tbsp unsalted butter", "1 tbsp minced chives", "Extra-virgin olive oil"], more: "Thomas Keller's recipe serves 6, so double it for 12." },
+    { t: "Turkey", rec: "turkey", who: "Colin and Sandy", items: ["6 dried bay leaves", "2 tsp black peppercorns", "½ tsp allspice berries", "½ cup kosher salt", "2 tbsp dried sage", "½ cup packed brown sugar", "¼ cup sherry vinegar or red wine vinegar", "¼ cup tamari", "4 tbsp unsalted butter", "Nonstick vegetable oil spray"], more: "Dry brine 8 to 12 hours ahead. The recipe's times are for a whole 12 to 14 lb bird, so a spatchcocked one roasts faster and skips the flip." },
+    { t: "Holiday whiskey yams", rec: "yams", who: "Colin", items: ["3 yams", "12 tbsp butter", "½ cup brown sugar", "½ cup raw sugar", "1 tbsp cinnamon", "Whole nutmeg, for 1½ tsp grated", "1 cup craisins", "Kosher salt", { x: "Honey, for drizzling", opt: true }], more: "1½ cups of whiskey from the bar. No ricotta, no pecans." },
+    { t: "Pumpkin haupia pie", rec: "pie", who: "Colin", items: ["60 g unsweetened shredded coconut", "8 gluten free graham crackers, nut free (about 124 g)", "60 g granulated sugar, crust and haupia together", "85 g unsalted butter (6 tbsp)", "1 can pumpkin purée, 15 oz", "1 can evaporated milk", "1 large egg", "½ tsp vanilla extract", "53 g dark brown sugar (¼ cup)", "1 tsp ground cinnamon", "Fresh ginger, a ½-inch knob", "⅛ tsp ground allspice", "⅛ tsp ground cloves", "¼ tsp ground nutmeg", "Kosher salt", "14 g cornstarch (2 tbsp)", "1 can full-fat coconut milk, 13.5 oz", "1 cup heavy cream", "28 g powdered sugar (¼ cup)"], more: "Makes one 9-inch pie. Gluten free, with gluten free graham crackers." },
+    { t: "Desserts", who: "For the pies", items: ["Vanilla ice cream", "Gluten free chocolate chip cookies"] },
+    { t: "Bar", who: "Drinks", items: ["Lemons"] }
+  ];
+
+  var AISLES = ["Produce", "Meat, deli and cheese", "Dairy and refrigerated", "Bakery", "Baking", "Spices", "Canned and jarred", "Oils, vinegars and condiments", "Pantry and snacks", "Drinks", "Frozen", "From home"];
+  var A = { P: "Produce", M: "Meat, deli and cheese", D: "Dairy and refrigerated", B: "Bakery", K: "Baking", S: "Spices", C: "Canned and jarred", O: "Oils, vinegars and condiments", N: "Pantry and snacks", W: "Drinks", F: "Frozen", H: "From home" };
+  var AISLE_OF = {
+    "Eggs": "D", "12 eggs": "D", "Duke's mayo": "O", "Sweet relish": "O", "Salt": "S", "Durkee's dressing": "O", "Paprika": "S",
+    "Brie": "M", "XO gouda": "M", "Prosciutto": "M", "Red pepper": "P", "Gluten free chocolate chip cookies": "B", "Salami": "M", "Nuts": "N",
+    "Carrots": "P", "Cucumbers": "P", "Celery": "P", "Dip": "D",
+    "1 lb potatoes": "P", "Heavy cream": "D", "2 garlic cloves": "P", "Rosemary or sage": "P", "Butter": "D", "Reduced mushroom stock (from Colin)": "H", "3 tablespoons cornstarch": "K", "6 tablespoons water or veggie stock": "C", "Boxed stuffing": "N", "Pineapple": "P",
+    "8 slices bread, for toast": "B", "1 can pineapple chunks": "C", "1 cup sugar": "K", "3 eggs": "D", "½ cup milk": "D", "½ cup butter": "D",
+    "1 butternut squash, 3 to 3½ lb": "P", "2 tbsp canola oil": "O", "Kosher salt and black pepper": "S", "2 sprigs sage": "P",
+    "Leeks: 1 cup sliced, plus 2 green leaves": "P", "½ cup sliced carrots": "P", "½ cup sliced shallots": "P", "½ cup sliced onions": "P",
+    "6 garlic cloves": "P", "2 tbsp honey": "N", "6 cups vegetable stock, plus a little extra": "C", "8 sprigs thyme": "P",
+    "2 sprigs Italian parsley": "P", "2 bay leaves": "S", "½ tsp black peppercorns": "S", "¼ cup crème fraîche": "D", "Nutmeg": "S",
+    "4 tbsp unsalted butter": "D", "1 tbsp minced chives": "P", "Extra-virgin olive oil": "O",
+    "6 dried bay leaves": "S", "2 tsp black peppercorns": "S", "½ tsp allspice berries": "S", "½ cup kosher salt": "S", "2 tbsp dried sage": "S",
+    "½ cup packed brown sugar": "K", "¼ cup sherry vinegar or red wine vinegar": "O", "¼ cup tamari": "O", "Nonstick vegetable oil spray": "K",
+    "60 g unsweetened shredded coconut": "K", "8 gluten free graham crackers, nut free (about 124 g)": "K", "60 g granulated sugar, crust and haupia together": "K",
+    "85 g unsalted butter (6 tbsp)": "D", "1 can pumpkin purée, 15 oz": "K", "1 can evaporated milk": "K", "1 large egg": "D",
+    "½ tsp vanilla extract": "K", "53 g dark brown sugar (¼ cup)": "K", "1 tsp ground cinnamon": "S", "Fresh ginger, a ½-inch knob": "P",
+    "⅛ tsp ground allspice": "S", "⅛ tsp ground cloves": "S", "¼ tsp ground nutmeg": "S", "Kosher salt": "S", "14 g cornstarch (2 tbsp)": "K",
+    "1 can full-fat coconut milk, 13.5 oz": "C", "1 cup heavy cream": "D", "28 g powdered sugar (¼ cup)": "K", "Lemons": "P", "16 oz fresh mushrooms": "P", "2 cups mushroom stock": "C", "2 lb fresh green beans": "P", "2 cups grape or cherry tomatoes": "P", "2 shallots, for 4 tbsp minced": "P", "2 lemons, for 4 tbsp juice": "P", "Dijon mustard, less than 4 tbsp": "O", "2 tbsp rice wine vinegar": "O", "2 tbsp extra virgin olive oil": "O", "1 tsp honey or agave": "K", "2 small garlic cloves": "P", "Salt and pepper": "S", "3 yams": "P", "12 tbsp butter": "D", "½ cup brown sugar": "K", "½ cup raw sugar": "K", "1 tbsp cinnamon": "S", "Whole nutmeg, for 1½ tsp grated": "S", "1 cup craisins": "N", "Honey, for drizzling": "N", "Vanilla ice cream": "F",
+    "Pizza dough for 4 pies": "B", "Gluten free pizza dough for 2 pies": "F", "Garlic": "P", "Rosemary": "P", "Cherry tomatoes": "P",
+    "Burrata": "M", "Bianco DiNapoli crushed tomatoes": "C", "Fresh mozzarella, for 3 pies": "M", "Low moisture mozzarella, for the barbecue pie": "M", "Buf buffalo mozzarella, for the 2 gluten free pies": "M",
+    "Spicy meat": "M", "Spicy salami": "M", "Prosciutto": "M", "Leftover brisket": "H",
+    "Onion": "P", "Broccoli": "P", "Spicy mayo": "O", "Swiss chard": "P",
+    "Wings, Buffalo and Sriracha garlic": "M", "Water bottles": "W", "Soda": "W", "Seltzer": "W"
+  };
+  var PIZZA = [{ t: "Shopping list", who: "", items: ["Pizza dough for 4 pies", "Gluten free pizza dough for 2 pies", "Garlic", "Rosemary", "Cherry tomatoes", "Burrata",
+    "Bianco DiNapoli crushed tomatoes", "Fresh mozzarella, for 3 pies", "Low moisture mozzarella, for the barbecue pie", "Buf buffalo mozzarella, for the 2 gluten free pies", "Spicy meat", "Spicy salami", "Prosciutto",
+    "Leftover brisket", "Onion", "Pineapple", "Broccoli", "Spicy mayo", "Swiss chard",
+    "Wings, Buffalo and Sriracha garlic", "Water bottles", "Soda", "Seltzer"], more: "Alcohol is BYOB." }];
+
+  var PICKUP = [
+    { t: "Hickman's", who: "Jeff, Mon or Tue", items: ["Spatchcocked turkey"] },
+    { t: "Kings Creek Country Club", who: "From Jamie", items: ["Rolls", "Cherry pie", "Gluten free chocolate chip cookies", "Plain pumpkin pie"] },
+    { t: "Peach Blossom Eatery", who: "Wed Nov 25, 8 to 10 AM", items: ["Vanilla whipped cream, 1 pint", "Turkey gravy, serves 10", "Holiday brassica salad, serves 5"] }
+  ];
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  /* Recipe pages, opened by #r-<key> from the Menu and Giving tabs */
+  var RECIPES = {
+    eggs: { t: "Katie Deegs",
+      meta: ["Makes 24 deviled egg halves from 12 eggs"],
+      ing: [{ h: null, i: ["12 eggs", "Duke’s mayonnaise, to taste", "Sweet relish, to taste", "Salt, to taste", "Durkee’s dressing, to taste", "Paprika"] }],
+      stepsNote: "Standard deviled-egg method, added to Katie’s ingredient list.",
+      steps: ["Hard-boil the eggs, then cool and peel.", "Cut the eggs in half lengthwise. Remove the yolks and place them in a bowl. Set the whites aside.", "Mash the yolks with Duke’s mayonnaise, sweet relish, Durkee’s dressing, and salt. Add the condiments a little at a time, tasting and adjusting until the filling has the flavor and consistency you like.", "Spoon or pipe the filling into the egg-white halves. The amount is based off your strong opinions on portion sizes. Sprinkle with paprika. Refrigerate until ready to serve."],
+      notes: ["The ratio of ingredients is purely based off of what you are feeling that day. So make sure to evaluate your feelings before making these."] },
+
+    soup: { t: "Thomas Keller’s Butternut Squash Soup with Brown Butter",
+      meta: ["Serves 6", "2 hr 15 min total"], src: "cooking.nytimes.com",
+      href: "https://cooking.nytimes.com/recipes/1857-thomas-kellers-butternut-squash-soup-with-brown-butter",
+      ing: [{ h: null, i: ["1 3-to-3 ½-pound butternut squash", "2 tablespoons canola oil", "Kosher salt and freshly ground black pepper", "2 sprigs sage", "1 cup thinly sliced leeks", "½ cup thinly sliced carrots", "½ cup thinly sliced shallots", "½ cup thinly sliced onions", "6 garlic cloves, smashed", "2 tablespoons honey", "6 cups vegetable stock, more if needed", "Bouquet Garni made of 8 sprigs thyme, 2 sprigs Italian parsley, 2 bay leaves and ½ teaspoon black peppercorns, all wrapped in a packet made of 2 green leek leaves", "¼ cup crème fraîche", "Freshly grated nutmeg", "4 tablespoons unsalted butter", "1 tablespoon minced chives", "Extra-virgin olive oil"] }],
+      steps: [
+        "Preheat the oven to 350 degrees. Line a small baking sheet with aluminum foil. Cut the neck off the squash and set it aside. Cut the bulb in half and scoop out and discard seeds. Brush each half inside and out with about 1 ½ teaspoons of the canola oil. Sprinkle the cavities with salt and pepper and tuck a sprig of sage into each. Place cut-side-down on the baking sheet and roast until completely tender, about 1 hour. Remove the squash from the oven and let cool, then scoop out and reserve the flesh (discard sage).",
+        "Meanwhile, using a paring knife, peel away the skin from the neck of the squash until you reach the bright orange flesh. Cut the flesh into ½-inch pieces (you should have about 4 cups).",
+        "Put the remaining canola oil in a stockpot over medium-high heat, add the leeks, carrots, shallots and onions and cook, stirring often, for about 6 minutes. Add the diced squash, garlic, 1 ½ teaspoons salt, and ½ teaspoon pepper and cook gently for 3 minutes, reducing the heat as necessary to keep the garlic and squash from coloring. Stir in the honey and cook, stirring, for 2 to 3 minutes. Add the stock and bouquet garni, bring to a simmer and cook for 10 to 15 minutes or until the squash is tender.",
+        "Add the roasted squash and simmer gently for about 30 minutes for the flavors to blend. Remove from the heat and discard the bouquet garni. Transfer the soup to a blender, in batches, and purée. Strain the soup through a fine sieve into a bowl. Taste the soup and adjust the seasoning. Let the soup cool, then refrigerate until ready to serve.",
+        "Place the crème fraîche in a small chilled bowl and stir in nutmeg to taste. Whisk until the crème fraîche holds a shape. Cover and refrigerate.",
+        "Gently reheat the soup until just hot. If it is too thick, add a little more vegetable stock. Heat a medium skillet over high heat. When it is very hot, add the butter and rotate the skillet over the heat as necessary to brown the butter evenly, scraping up any bits that settle in the bottom. As soon as the butter is a hazelnut brown, pour it into the pot of soup (keep a safe distance, it may sputter), then stir.",
+        "Ladle the soup into six serving bowls. Top each with a dollop of crème fraîche. Grind some black pepper over the top and sprinkle on the chives. Drizzle a little olive oil over the top."],
+      nutr: [["Calories", "384"], ["Carbohydrate", "48 g"], ["Cholesterol", "25.9 mg"], ["Fat", "24.6 g"], ["Fiber", "8.9 g"], ["Protein", "4.6 g"], ["Saturated fat", "8.9 g"], ["Sodium", "1332.1 mg"], ["Sugar", "14.4 g"], ["Trans fat", "0.1 g"], ["Unsaturated fat", "2.7 g"]] },
+
+    turkey: { t: "Glazed and Lacquered Roast Turkey",
+      d: "A little soy sauce in the glaze ensures the burnished mahogany skin that holiday memories are made of. But it’s not just for looks; this brined and buttered bird is seasoned inside and out.",
+      meta: ["Serves 12"], src: "bonappetit.com", href: "https://www.bonappetit.com/recipe/glazed-and-lacquered-roast-turkey",
+      ing: [{ h: null, i: ["1 12–14-pound turkey, neck and giblets removed, patted dry", "6 dried bay leaves", "2 teaspoons black peppercorns", "½ teaspoon allspice berries", "½ cup kosher salt", "2 tablespoons dried sage", "½ cup (packed) brown sugar, divided", "¼ cup Sherry vinegar or red wine vinegar", "¼ cup soy sauce", "4 tablespoons unsalted butter, cut into 4 pieces, room temperature", "Nonstick vegetable oil spray"] },
+        { h: "Equipment", i: ["A spice mill or a mortar and pestle"] }],
+      steps: [
+        "Remove wishbone from turkey by lifting neck skin to expose meat and cutting along both sides of bone with a small paring knife to separate flesh from bone. Pull firmly on both sides to snap out (if bone does not come out in one piece, grip remaining fragments with a paper towel and pull out). This will make carving the breast much easier later.",
+        "Grind bay leaves, peppercorns, and allspice in a spice mill until very fine; toss with salt, sage, and ¼ cup brown sugar in a medium bowl. Generously sprinkle dry brine inside cavity and rub all over skin, packing on until you’ve used entire mixture. Chill turkey on a large rimmed baking sheet uncovered 8–12 hours.",
+        "Thoroughly rinse turkey to remove brine; pat dry. Let sit on baking sheet 3 hours to bring to room temperature.",
+        "Meanwhile, bring vinegar, soy sauce, and remaining ¼ cup brown sugar to a boil in a small saucepan over medium heat, stirring to dissolve sugar. Reduce heat and simmer, stirring occasionally, until mixture is thickened to the consistency of molasses (it needs to be very thick to adhere to the turkey; if glaze is too thin, keep simmering), 5–8 minutes. Let glaze cool.",
+        "Preheat oven to 325°. Starting at neck end of turkey, gently slide your fingers between skin and breast to loosen skin. Place butter pieces underneath skin, spacing evenly over breasts. Coat a piece of foil large enough to cover turkey breast with nonstick spray. Cover breast with foil, coated side down, avoiding thighs and tucking end inside cavity (foil will protect skin from tearing during first stage of cooking). Place turkey, breast side down, on a V-shape roasting rack set inside a large roasting pan. Roast until back side of turkey is golden brown, 50–60 minutes.",
+        "Remove turkey from oven and transfer to a clean rimmed baking sheet with oven mitts or 2 pairs of tongs. Turn bird breast side up and transfer back to rack in roasting pan; discard foil. Pour any juices collected on baking sheet into pan. Roast turkey until breast is golden brown and skin is crisp, 35–45 minutes.",
+        "Remove turkey from oven and brush all over with glaze. Continue to roast, checking temperature every 5 minutes, until an instant-read thermometer inserted into thickest part of breast near neck registers 150° (temperature will rise as the bird rests), 15–25 minutes. Transfer turkey to a platter and let rest 1 hour.",
+        "Increase oven to 450°. Brush another even layer of glaze over turkey. Roast, watching closely in case glaze starts to burn, until turkey is deep golden brown and skin is shiny and crisp, about 5 minutes. Transfer to a clean platter and let rest 30 minutes before carving."],
+      notes: ["Do Ahead: Turkey can be brined 2 days ahead. Brine on Tuesday, then rinse on Wednesday and chill overnight so you are ready to roast on Thursday."] },
+
+    pie: { t: "Pumpkin-Haupia Pie",
+      d: "This pumpkin-haupia pie combines coconut’s tropical flavors with warmly spiced pumpkin for an unexpected but delicious twist on a fall classic.",
+      meta: ["Serves 8", "15 min prep", "1 hr 15 min cook", "5 hr 15 min total"], src: "seriouseats.com", href: "https://www.seriouseats.com/pumpkin-haupia-pie-12227490",
+      ing: [
+        { h: "For the Crust", i: ["60 g unsweetened shredded coconut (about 2 ounces; about 1 cup and 2 tablespoons)", "8 graham crackers (about 4 1/4 ounces; 124 g)", "30 g granulated sugar (about 1 ounce; 2 tablespoons plus 1 teaspoon)", "85 g unsalted butter (3 ounces; 6 tablespoons), melted"] },
+        { h: "For the Pumpkin Filling", i: ["170 g pumpkin purée (6 ounces; about 2/3 cups) from 1 (15-ounce) can", "142 g evaporated milk (5 ounces; 1/2 cup plus 1 tablespoon)", "1 large egg", "1/2 teaspoon vanilla extract", "53 g dark brown sugar (about 1 3/4 ounces; 1/4 cup)", "1 teaspoon ground cinnamon", "1/2 teaspoon freshly grated ginger (from 1/2-inch knob)", "1/8 teaspoon ground allspice", "1/8 teaspoon ground cloves", "1/4 teaspoon ground nutmeg", "Pinch kosher salt"] },
+        { h: "For the Haupia Filling", i: ["80 g water (2 3/4 ounces; 1/3 cup)", "14 g cornstarch (1/2 ounce; about 2 tablespoons)", "191 g full-fat coconut milk (6 3/4 ounces; about 3/4 cup plus 2 tablespoons) from 1 (13.5-ounce) can", "30 g granulated sugar (1 ounce; 2 tablespoons)", "Pinch kosher salt"] },
+        { h: "For the Topping", i: ["227 g heavy cream (8 ounces; 1 cup)", "28 g powdered sugar (about 1 ounce; 1/4 cup)"] }],
+      steps: [
+        "Adjust oven rack to middle position and preheat oven to 350°F (180°C).",
+        "For the Crust: In a medium skillet set over medium heat, toast coconut flakes, stirring continuously, until golden brown, 3 to 4 minutes. Transfer to a bowl and let cool; reserve 2 tablespoons (about 1/4 ounce; 7 grams) of toasted coconut flakes for garnishing.",
+        "In a food processor fitted with the blade attachment, pulse graham crackers, sugar, and remaining 1 cup (about 1 3/4 ounces; 53 g) toasted shredded coconut until finely ground, 10 to 15 pulses. Add melted butter and pulse until crumbs are evenly coated, 2 to 3 pulses. Scrape mixture into an ungreased 9-inch pie dish. Spread into an even layer, then use a flat-bottomed drinking glass or measuring cup to press the crust across the bottom and up the sides of the dish. Keep pressing until the crumbs form a compact, even layer. Bake until lightly golden and fragrant, about 5 minutes. Set aside to cool while you prepare filling.",
+        "For the Pumpkin Filling: In a large bowl, whisk pumpkin purée, evaporated milk, egg, vanilla extract, dark brown sugar, cinnamon, ginger, allspice, cloves, and nutmeg until smooth. Pour mixture into prepared crust. Cover pie with aluminum foil and bake at 350°F (180°C) until pie filling is fully set along the edges and center jiggles slightly, about 30 minutes. Remove from oven and allow pie to cool, uncovered, at room temperature for 30 minutes.",
+        "For the Haupia Filling: In a small pot, whisk water and cornstarch to combine. Add coconut milk, sugar, and salt, whisking to combine. Bring to a simmer over medium heat and cook, stirring frequently, until mixture thickens to a glue-like consistency, 3 to 5 minutes. Immediately pour haupia over pumpkin filling, using an offset or flexible spatula to spread the mixture into an even layer. Let cool at room temperature for 15 minutes, then refrigerate, uncovered, until fully set and chilled, about 3 hours.",
+        "For the Whipped Cream: Before serving, prepare the whipped cream. If you want to pipe the whipped cream, fit a piping bag with desired piping tip; set aside.",
+        "Using an electric hand mixer or stand mixer fitted with the whisk attachment, beat heavy cream and powdered sugar on medium-high speed until stiff peaks form, 2 to 3 minutes. Using a flexible spatula, gently scrape whipped cream into prepared piping bag. Decorate pie with whipped cream as desired. (Alternatively, whipped cream can be dolloped over top of pie and spread edge to edge using a flexible or offset spatula.) Garnish with reserved toasted coconut flakes."],
+      nutr: [["Calories", "490 kcal"], ["Fat", "35 g"], ["Saturated fat", "24 g"], ["Unsaturated fat", "0 g"], ["Carbohydrates", "42 g"], ["Protein", "5 g"], ["Fiber", "3 g"], ["Sugar", "24 g"], ["Sodium", "134 mg"], ["Cholesterol", "84 mg"]] },
+
+    yams: { t: "Holiday Whiskey Yams",
+      ing: [{ h: null, i: ["3 yams, peeled and sliced", "12 tbsp butter", "½ cup brown sugar", "½ cup raw sugar", "1 tbsp cinnamon", "1 ½ tsp freshly grated nutmeg", "1 ½ cups whiskey", "1 cup craisins"] },
+        { h: "Optional toppings (scoop yourselves)", i: ["4 ½ tbsp ricotta cheese", "½ cup toasted pecans", "Honey for drizzling"] }],
+      steps: [
+        "Peel and slice the yams into ½-inch pieces and place them in a well-buttered casserole dish, seasoning lightly with kosher salt.",
+        "Mix the butter, brown sugar, raw sugar, cinnamon, and freshly grated nutmeg in a bowl. Spread this mixture over the yams.",
+        "Cover and bake at 375°F for 30 minutes. Remove, stir well, then return to the oven uncovered for 15–20 minutes.",
+        "While they cook, pour boiling whiskey over the craisins and let them soak.",
+        "When the yams are done, stir them again and transfer to a serving platter.",
+        "Serve ricotta, toasted pecans, whiskey-soaked craisins, and honey on the side so everyone can top their own.",
+        "Serve and enjoy."],
+      notes: ["Ashley’s favorite yam recipe."] },
+
+    gravy: { t: "Colin’s Mushroom Gravy", d: "Gluten free, with mushroom stock and cornstarch.",
+      meta: ["Serves 12", "45 min cook"], src: "Adapted from seriouseats.com",
+      ing: [{ h: null, i: ["4 cups (1L) mushroom stock", "1/2 ounce (14g) dried porcini mushrooms", "6 tablespoons (90g) unsalted butter", "1 extra tablespoon of butter for mounting", "12 ounces cremini mushrooms, washed, stemmed, and sliced 1/4 inch thick (about 4 cups sliced mushrooms)", "Cornstarch, mixed with a little cold water, to thicken", "2 tablespoons (30ml) dry sherry", "4-8 fresh thyme stems, plus picked thyme leaves for garnish", "Kosher salt and freshly ground black pepper"] }],
+      steps: [
+        "Remove the stems from the fresh mushrooms and slice the remaining mushroom heads.",
+        "In a medium saucepan, bring stock and the mushroom stems to a boil over medium-high heat. Remove from heat and add porcini mushrooms. Let steep until mushrooms are tender, about 15 minutes. Drain dried mushrooms, reserving stock and stems. Roughly chop mushrooms.",
+        "Wash and dry saucepan. Add butter and cook over medium heat until foaming subsides, then add porcini and cremini mushrooms and cook, stirring occasionally, until browned, about 10-15 minutes.",
+        "Take out the mushroom stems from the stock. Slowly whisk in reserved stock. Bring to a boil, reduce to a simmer, add the thyme stems, and cook until reduced to 3 cups (710ml), 10 to 15 minutes. Whisk in the cornstarch mixture a little at a time until the gravy thickens. Stir in sherry and continue to cook until warmed through, about 1 minute. Season with salt and pepper to taste. Remove the thyme stems if you can, and mount a tablespoon of butter, stirring constantly until the sauce is glossy and incorporated. Serve as desired, garnishing with thyme leaves."],
+      notes: ["Made with mushroom stock and thickened with cornstarch, so it’s gluten free and vegetarian.", "The finished gravy can be refrigerated in an airtight container for up to 1 week; reheat over medium-low heat before serving."] },
+
+    board: { t: "Charcuterie", d: "Put out on a board so people can pick at it or fork it.",
+      ing: [{ h: null, i: ["Brie", "XO gouda", "Salami", "Prosciutto"] }],
+      steps: [
+        "Take the brie out 1.5 hours before cutting.",
+        "Take the gouda out 30 minutes to 1.5 hours before cutting.",
+        "Get the meat out.",
+        "Cut the cheese and put everything on a board so people can pick it or fork it."] },
+
+    veggie: { t: "Veggie Plate", d: "Roman loves carrots.",
+      ing: [{ h: null, i: ["Carrots", "Cucumbers", "Celery", "Red pepper", "Dip"] }],
+      steps: [
+        "Cut up the vegetables.",
+        "Cut the carrots into sticks that aren’t a choking size, because Roman loves carrots.",
+        "Put everything on a plate with the dip."] },
+
+    gravyday: { t: "Mushroom Gravy, Day Of", d: "Finishing Colin’s mushroom gravy on Thanksgiving. The mushrooms are gourmet.",
+      ing: [{ h: null, i: ["Reduced mushroom stock (from Colin)", "Butter", "3 tablespoons cornstarch", "6 tablespoons water or veggie stock"] }],
+      steps: [
+        "Mix the cornstarch with the water or veggie stock to make a slurry.",
+        "Warm the reduced mushroom stock.",
+        "Whisk in the slurry until the gravy thickens.",
+        "Mount with butter."] },
+
+    muffs: { t: "Stuffin’ Muffs", d: "Muffins out of stuffins.",
+      meta: ["Bryan, because we’re forcing him to cook them"],
+      ing: [{ h: null, i: ["Boxed stuffing, baked as muffins"] }] },
+
+    greenbean: { t: "Green Bean & Tomato Salad with Lemon Dijon Vinaigrette",
+      meta: ["Serves 4", "10 min prep", "3 min cook", "13 min total"],
+      ing: [{ h: "Salad", i: ["1 pound fresh green beans, washed and ends trimmed", "1 cup grape or cherry tomatoes, halved", "2 tablespoons shallot, minced"] },
+        { h: "Lemon Dijon Vinaigrette", i: ["2 tablespoons fresh lemon juice", "2 tablespoons Dijon mustard (reduce to taste; see note)", "1 tablespoon rice wine vinegar", "1 tablespoon extra virgin olive oil", "½ teaspoon agave nectar or honey", "1 small garlic clove, minced", "Salt and pepper to taste"] }],
+      steps: ["Clean and trim the ends off the green beans.", "Bring a large pot of water to a boil.", "Add a few pinches of salt to the water, then add the green beans.", "Cook the green beans for 3 minutes.", "Remove the green beans from the water and place them in a bowl of ice water to stop the cooking process.", "While they are cooling, halve the tomatoes and mince the shallot.", "Place the drained and cooled green beans, halved tomatoes, and shallot in a serving bowl.", "In a small bowl or mason jar, add all the vinaigrette ingredients and whisk or shake to combine.", "Pour half the dressing over the salad and toss everything together.", "Serve immediately or refrigerate until ready to serve."],
+      notes: ["The handwritten note says “Too much mustard, reduce.” The printed recipe calls for 2 tablespoons Dijon mustard; use less to taste."] },
+
+    pineapple: { t: "Pineapple Stuffing",
+      d: "From the handwritten recipe card.",
+      meta: ["45 min cook"],
+      ing: [{ h: null, i: ["8 slices toast, cubed", "1 can pineapple chunks", "1 cup sugar", "3 eggs", "½ cup milk", "½ cup butter, melted"] }],
+      steps: [
+        "Preheat the oven to 350°F. Cut the toast into cubes.",
+        "Beat together the eggs, milk, and sugar.",
+        "Stir in the toast cubes, pineapple chunks, and melted butter.",
+        "Transfer to a baking dish and bake for 45 minutes."],
+      card: ["8 slices toast", "1 can chunk P.", "1 C. sugar", "3 eggs", "½ C. milk", "½ C. melted butter", "", "Beat eggs milk sugar.", "Add cubes etc.", "", "Bake in oven 45 min", "350°"] },
+
+    mashed: { t: "Colin’s Mashed Potatoes",
+      d: "Mashed potatoes with cream gently infused with crushed garlic and rosemary or sage.",
+      meta: ["10–15 min to boil the potatoes"],
+      ing: [{ h: null, i: ["1 lb potatoes, peeled", "Heavy cream, as needed", "2 garlic cloves, crushed", "Rosemary or sage, to taste", "Butter, as needed"] }],
+      steps: [
+        "Peel the potatoes and boil until tender, usually 10–15 minutes. Drain well.",
+        "Meanwhile, place the heavy cream, some of the butter, the crushed garlic, and either rosemary or sage in a saucepan. Warm gently over low heat and let the garlic and herbs infuse the cream.",
+        "Press the cooked potatoes through a ricer, or mash them.",
+        "Pour the warm cream mixture through a strainer into the potatoes, removing the garlic and herbs.",
+        "Gently fold together, adding more butter as needed to reach the desired consistency."],
+      notes: ["Cream, herb, and butter amounts are flexible. Use either rosemary or sage."] }
+  };
+  var lastTab = "menu", saved = {};
+  function renderRecipe(k) {
+    var R = RECIPES[k], box = document.getElementById("recipe");
+    box.textContent = "";
+    var back = el("a", "back", "← Back"); back.href = "#" + lastTab;
+    box.append(back, el("h1", null, R.t));
+    if (R.d) box.append(el("p", "sub", R.d));
+    var m = (R.meta || []).slice();
+    var src = el("p", "rmeta");
+    if (m.length) src.append(document.createTextNode(m.join(" · ")));
+    if (R.src) {
+      if (m.length) src.append(document.createTextNode(" · "));
+      if (R.href) { var a = el("a", null, R.src); a.href = R.href; a.target = "_blank"; a.rel = "noopener noreferrer"; src.append(a); }
+      else src.append(document.createTextNode(R.src));
+    }
+    if (src.childNodes.length) box.append(src);
+    var ing = el("section", "rsec"); ing.append(el("h2", null, "Ingredients"));
+    R.ing.forEach(function (g) {
+      if (g.h) ing.append(el("h3", null, g.h));
+      var ul = el("ul", "ringr"); g.i.forEach(function (x) { ul.append(el("li", null, x)); }); ing.append(ul);
+    });
+    box.append(ing);
+    if (R.steps) {
+      var dir = el("section", "rsec"); dir.append(el("h2", null, "Directions"));
+      if (R.stepsNote) dir.append(el("p", "rnote", R.stepsNote));
+      var ol = el("ol", "rsteps"); R.steps.forEach(function (x) { ol.append(el("li", null, x)); }); dir.append(ol);
+      box.append(dir);
+    }
+    if (R.notes || R.card) {
+      var n = el("section", "rsec"); n.append(el("h2", null, "Notes"));
+      (R.notes || []).forEach(function (x) { n.append(el("p", "rnote", x)); });
+      if (R.card) { n.append(el("h3", null, "The recipe card")); n.append(el("p", "rcard", R.card.join("\n"))); }
+      box.append(n);
+    }
+    if (R.nutr) {
+      var s = el("section", "rsec"); s.append(el("h2", null, "Nutrition"));
+      if (R.nutrLabel) s.append(el("h3", null, R.nutrLabel));
+      var dl = el("dl", "rnutr");
+      R.nutr.forEach(function (p) { dl.append(el("dt", null, p[0]), el("dd", null, p[1])); });
+      s.append(dl); box.append(s);
+    }
+    var back2 = el("a", "back bottom", "← Back"); back2.href = "#" + lastTab; box.append(back2);
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.rl");
+    if (a) saved[lastTab] = window.scrollY;
+  });
+  function recLink(k, text) { var a = el("a", "rl", text); a.href = "#r-" + k; return a; }
+
+
+  var courses = document.getElementById("courses");
+  MENU.forEach(function (c) {
+    var s = el("section", "course"); s.append(el("h2", null, c.name));
+    var ul = el("ul");
+    c.items.forEach(function (x) {
+      var li = el("li"), line = el("div", "line");
+      var nm = x.rec ? recLink(x.rec, x.t) : el("span", null, x.t); nm.classList.add("name");
+      line.append(nm, el("span", "dots"), el("span", "price", x.p));
+      if (x.rec) x.r = null;
+      li.append(line, el("p", "desc", x.d));
+      if (x.nut) li.append(el("div", "nut " + x.nut.k, x.nut.t));
+      if (!x.who && !x.r) { ul.append(li); return; }
+      var q = el("div", "q");
+      if (x.who) q.append(el("span", "by", x.who));
+      if (x.r) { if (x.who) q.append(document.createTextNode(" · ")); var a = el("a", null, x.r.label); a.href = x.r.href; a.target = "_blank"; a.rel = "noopener noreferrer"; q.append(a); }
+      li.append(q); ul.append(li);
+    });
+    s.append(ul); courses.append(s);
+  });
+
+  function renderList(g, lists) {
+    var s = el("section"), head = el("div", "head");
+    var h3 = el("h3"); h3.append(g.rec ? recLink(g.rec, g.t) : document.createTextNode(g.t)); if (g.norecipe) h3.append(el("span", "nr", " (no recipe uploaded yet)"));
+    head.append(h3, el("span", "who", g.who)); s.append(head);
+    var ul = el("ul");
+    g.items.forEach(function (i) {
+      if (typeof i === "string") ul.append(el("li", null, i));
+      else ul.append(el("li", "opt", i.x + " (optional)"));
+    });
+    if (g.more) ul.append(el("li", "pending", g.more));
+    s.append(ul); lists.append(s);
+  }
+  function renderAisles(groups, box, showFrom) {
+    var by = {}, others = groups.filter(function (g) { return g.buyer; });
+    groups = groups.filter(function (g) { return !g.buyer; });
+    groups.forEach(function (g) {
+      g.items.forEach(function (i) {
+        var x = typeof i === "string" ? i : i.x, a = A[AISLE_OF[x]] || "Other";
+        (by[a] = by[a] || []).push({ x: i.opt ? x + " (optional)" : x, opt: !!i.opt, from: g.t });
+      });
+    });
+    AISLES.concat("Other").forEach(function (a) {
+      if (!by[a]) return;
+      var s = el("section"), head = el("div", "head");
+      head.append(el("h3", null, a), el("span", "who", by[a].length + (by[a].length === 1 ? " item" : " items"))); s.append(head);
+      var ul = el("ul");
+      by[a].forEach(function (it) {
+        var li = el("li", it.opt ? "opt" : null);
+        li.append(el("span", "x", it.x));
+        if (showFrom) li.append(el("span", "from", it.from));
+        ul.append(li);
+      });
+      s.append(ul); box.append(s);
+    });
+    var todo = groups.filter(function (g) { return g.todo; });
+    if (todo.length) {
+      var s = el("section"), ul = el("ul");
+      ul.append(el("li", "pending", showFrom ? "Still to come: " + todo.map(function (g) { return g.t; }).join(", ") + "." : todo[0].more));
+      s.append(ul); box.append(s);
+    }
+    if (false && others.length) {
+      var s2 = el("section"), ul2 = el("ul");
+      ul2.append(el("li", "pending", "Left off this list: " + others.map(function (g) { return g.t.toLowerCase() + " (" + g.buyer + " is buying)"; }).join(" and ") + "."));
+      s2.append(ul2); box.append(s2);
+    }
+  }
+  function draw(groups, box, view, showFrom) {
+    box.textContent = "";
+    if (view === "aisle") renderAisles(groups, box, showFrom);
+    else groups.forEach(function (g) { renderList(g, box); });
+  }
+  var lists = document.getElementById("lists"), pizzaLists = document.getElementById("pizza-lists"), pickup = document.getElementById("pickup");
+  PICKUP.forEach(function (g) { renderList(g, pickup); });
+
+  var revealAll = function () {};
+  var view = "recipe";
+  try { if (localStorage.getItem("tg-view") === "aisle") view = "aisle"; } catch (e) {}
+  function setView(v) {
+    view = v;
+    draw(LISTS, lists, v, true);
+    draw(PIZZA, pizzaLists, v, false);
+    document.querySelectorAll(".view button").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-view") === v ? "true" : "false"); });
+    try { localStorage.setItem("tg-view", v); } catch (e) {}
+    revealAll();
+  }
+  document.querySelectorAll(".view button").forEach(function (b) {
+    b.addEventListener("click", function () { setView(b.getAttribute("data-view")); });
+  });
+  setView(view);
+
+  /* Four pages, picked by #picks (default), #menu, #ingredients or #pizza */
+  var inRecipe = false, nav = document.querySelector(".topbar");
+  function show() {
+    var h = location.hash.slice(1), rp = document.getElementById("page-recipe");
+    if (h.indexOf("r-") === 0 && RECIPES[h.slice(2)]) {
+      ["picks", "menu", "ingredients", "friday", "saturday", "pizza"].forEach(function (k) { document.getElementById("page-" + k).hidden = true; });
+      nav.hidden = true; renderRecipe(h.slice(2)); rp.hidden = false; inRecipe = true;
+      rp.classList.remove("enter"); void rp.offsetWidth; rp.classList.add("enter");
+      return 0;
+    }
+    var cur = ["menu", "ingredients", "friday", "saturday", "pizza"].indexOf(h) >= 0 ? h : "picks";
+    var y = inRecipe && saved[cur] != null ? saved[cur] : 0;
+    nav.hidden = false; rp.hidden = true; inRecipe = false; lastTab = cur;
+    ["picks", "menu", "ingredients", "friday", "saturday", "pizza"].forEach(function (k) {
+      document.getElementById("page-" + k).hidden = k !== cur;
+      document.getElementById("tab-" + k).setAttribute("aria-current", k === cur ? "page" : "false");
+    });
+    var pg = document.getElementById("page-" + cur);
+    pg.classList.remove("enter"); void pg.offsetWidth; pg.classList.add("enter");
+    return y;
+  }
+  /* Scroll-in animations, skipped when the viewer asks for reduced motion */
+  var motion = "IntersectionObserver" in window && window.matchMedia && window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  var io = null, fired = false;
+  if (motion) {
+    document.documentElement.classList.add("anim");
+    io = new IntersectionObserver(function (entries) {
+      fired = true;
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -6% 0px" });
+    setTimeout(function () { if (!fired) document.querySelectorAll(".reveal").forEach(function (n) { n.classList.add("in"); }); }, 1500);
+  }
+  revealAll = function () {
+    if (!io) return;
+    var i = 0;
+    document.querySelectorAll(".menu li, #lists > section, #pizza-lists > section, #pickup > section, .note, .plan, .fine, h2.sub, .diet").forEach(function (n) {
+      if (n.classList.contains("reveal")) return;
+      n.classList.add("reveal"); n.style.setProperty("--d", (i++ % 5) * 70 + "ms"); io.observe(n);
+    });
+  };
+  revealAll();
+  /* Header lines drift very slowly, unless the viewer asks for reduced motion */
+  (function () {
+    var band = document.getElementById("band");
+    if (!band || !window.matchMedia || !window.matchMedia("(prefers-reduced-motion: no-preference)").matches || !window.requestAnimationFrame) return;
+    var paths = band.querySelectorAll("path"), onScreen = true, last = 0, t0 = null;
+    function draw(t) {
+      paths.forEach(function (p, k) {
+        var d = "";
+        for (var x = 0; x <= 560; x += 8) {
+          var base = 5 * Math.sin(x / 62 + t * 0.12) + 2.5 * Math.sin(x / 27 + 1 - t * 0.17);
+          var y = 6 + k * 4.4 + base * (0.55 + 0.12 * k) + 1.2 * Math.sin(x / 90 + k * 0.7 + t * 0.08);
+          d += (x ? " L" : "M") + x + " " + y.toFixed(1);
+        }
+        p.setAttribute("d", d);
+      });
+    }
+    function frame(now) {
+      if (t0 === null) t0 = now;
+      if (onScreen && !document.hidden && now - last > 40) { last = now; draw((now - t0) / 1000); }
+      requestAnimationFrame(frame);
+    }
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(band);
+    requestAnimationFrame(frame);
+  })();
+  /* Drop-in bar with the page's title and a menu of pages */
+  var mini = document.getElementById("mini"), miniTitle = document.getElementById("mini-title"),
+      miniBtn = document.getElementById("mini-btn"), miniMenu = document.getElementById("mini-menu");
+  function closeMenu() { miniMenu.hidden = true; miniBtn.setAttribute("aria-expanded", "false"); }
+  function updateMini() {
+    var h1 = document.querySelector("#recipe h1");
+    miniTitle.textContent = inRecipe ? (h1 ? h1.textContent : "") : document.getElementById("tab-" + lastTab).textContent;
+    miniMenu.querySelectorAll("a").forEach(function (a) { a.setAttribute("aria-current", !inRecipe && a.getAttribute("data-k") === lastTab ? "page" : "false"); });
+    var past = nav.hidden ? window.scrollY > 80 : nav.getBoundingClientRect().bottom < 0;
+    mini.classList.toggle("on", past);
+    if (!past) closeMenu();
+  }
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { ticking = false; updateMini(); });
+  }, { passive: true });
+  miniBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var open = miniMenu.hidden; miniMenu.hidden = !open; miniBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) miniMenu.querySelector("a").focus();
+  });
+  miniMenu.addEventListener("click", function (e) { if (e.target.closest("a")) closeMenu(); });
+  document.addEventListener("click", function (e) { if (!miniMenu.hidden && !mini.contains(e.target)) closeMenu(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !miniMenu.hidden) { closeMenu(); miniBtn.focus(); } });
+  window.addEventListener("hashchange", function () { var y = show(); window.scrollTo(0, y || 0); updateMini(); });
+  show(); updateMini();
+})();
+</script>
+
+</body>
+</html>
