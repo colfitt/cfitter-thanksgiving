@@ -170,9 +170,11 @@ a.rl:hover { color: var(--accent); }
   .ing h3 { font-size: 1.35rem; }
   #page-picks ul, #page-saturday ul { columns: 2; column-gap: 64px; }
   #page-picks li, #page-saturday li { break-inside: avoid; }
-  #courses, .pies { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 64px; align-items: start; }
+  #courses, .pies { columns: 2; column-gap: 64px; }
+  #courses section.course, .pies section.course { break-inside: avoid; display: inline-block; width: 100%; margin: 0 0 44px; }
   #courses section.course + section.course, .pies section.course + section.course { margin-top: 0; }
-  #lists, #pickup, #pizza-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; align-items: start; }
+  #lists, #pickup, #pizza-lists { columns: 2; column-gap: 48px; }
+  #lists > section, #pickup > section, #pizza-lists > section { break-inside: avoid; display: inline-block; width: 100%; }
   .ing #lists section:last-of-type, .ing #pickup section:last-of-type, .ing #pizza-lists section:last-of-type { border-bottom: 0; }
   .diet, .plan { max-width: 720px; }
   .recipe h1 { font-size: clamp(2.6rem, 5vw, 3.6rem); }
@@ -191,7 +193,7 @@ a.rl:hover { color: var(--accent); }
   .mini-in { padding-left: 48px; padding-right: 48px; }
   .mini-menu { right: 48px; }
   #page-picks ul, #page-saturday ul { columns: 3; }
-  #courses, .pies, #lists, #pickup, #pizza-lists { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #courses, .pies, #lists, #pickup, #pizza-lists { columns: 3; }
   #page-recipe { max-width: 1120px; margin: 0 auto; }
 }
 </style>
