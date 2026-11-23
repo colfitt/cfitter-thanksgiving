@@ -153,8 +153,9 @@ a.rl:hover { color: var(--accent); }
 .ri, .rd { min-width: 0; }
 @media (max-width: 640px) {
   nav { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    gap: 22px; padding: 4px 24px 4px 0; scroll-padding-inline: 24px;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); }
+    gap: 22px; padding: 4px 24px 4px 14px; scroll-padding-inline: 24px;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 28px), transparent); }
+  .topbar { gap: 4px; }
   nav::-webkit-scrollbar { display: none; }
   nav a { flex: none; }
 }
@@ -723,7 +724,7 @@ a.rl:hover { color: var(--accent); }
       document.getElementById("tab-" + k).setAttribute("aria-current", k === cur ? "page" : "false");
     });
     var ct = document.getElementById("tab-" + cur), nv = ct.parentNode;
-    if (nv.scrollWidth > nv.clientWidth) nv.scrollLeft = Math.max(0, ct.offsetLeft - nv.offsetLeft - 24);
+    if (nv.scrollWidth > nv.clientWidth) nv.scrollLeft = Math.max(0, ct.offsetLeft - nv.offsetLeft - (nv.clientWidth - ct.offsetWidth) / 2);
     var pg = document.getElementById("page-" + cur);
     pg.classList.remove("enter"); void pg.offsetWidth; pg.classList.add("enter");
     return y;
