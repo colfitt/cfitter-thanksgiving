@@ -142,6 +142,12 @@ ul { list-style: none; margin: 0; padding: 0; }
 .rsteps li { counter-increment: s; display: grid; grid-template-columns: 2em 1fr; margin-bottom: 16px; }
 .rsteps li::before { content: counter(s); font-family: var(--display); font-size: 1.35rem; line-height: 1.15; color: var(--accent); font-variant-numeric: lining-nums; }
 .rnote { font-size: 15.5px; color: var(--soft); font-style: italic; margin: 0 0 8px; }
+.rtools { border: 1px solid var(--rule); padding: 18px 20px 14px; margin-top: 28px; background: var(--paper); }
+.rtools h2 { margin: 0 0 8px; }
+.rtools h3 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.1rem; margin: 14px 0 4px; color: var(--soft); }
+.rneed { margin: 0; }
+.rtips { margin: 0; padding-left: 1.1em; font-size: 15.5px; color: var(--soft); }
+.rtips li { margin: 0 0 6px; }
 .rcard { white-space: pre-line; font-style: italic; color: var(--soft); font-size: 15.5px; margin: 0; }
 .rnutr { display: grid; grid-template-columns: 1fr auto; gap: 3px 16px; font-size: 14px; color: var(--soft); margin: 0; }
 .rnutr dt { margin: 0; } .rnutr dd { margin: 0; text-align: right; font-variant-numeric: lining-nums; }
@@ -181,12 +187,11 @@ a.rl:hover { color: var(--accent); }
   .recipe h1 { font-size: clamp(2.6rem, 5vw, 3.6rem); }
 }
 @media (min-width: 960px) {
-  #recipe { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: 64px; align-items: start; }
-  #recipe > * { grid-column: 1 / -1; }
-  #recipe > .ri { grid-column: 1; }
-  #recipe > .rd { grid-column: 2; }
-  #recipe > .ri.solo { grid-column: 1 / -1; }
-  #recipe > .back { justify-self: start; }
+  .rmain { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: 64px; align-items: start; }
+  .rmain > * { grid-column: 1 / -1; }
+  .rmain > .ri { grid-column: 1; }
+  .rmain > .rd { grid-column: 2; }
+  .rmain > .ri.solo { grid-column: 1 / -1; }
 }
 @media (min-width: 1200px) {
   body { font-size: 19px; padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); }
@@ -195,7 +200,10 @@ a.rl:hover { color: var(--accent); }
   .mini-menu { right: 48px; }
   #page-picks ul, #page-saturday ul { columns: 3; }
   #courses, .pies, #lists, #pickup, #pizza-lists { columns: 3; }
-  #page-recipe { max-width: 1120px; margin: 0 auto; }
+  #page-recipe { max-width: 1280px; margin: 0 auto; }
+  .rbody.has-tools { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: 56px; align-items: start; }
+  .rbody.has-tools > .rmain { grid-column: 1; grid-row: 1; }
+  .rbody.has-tools > .rtools { grid-column: 2; grid-row: 1; position: sticky; top: 76px; margin-top: 32px; max-height: calc(100vh - 96px); overflow-y: auto; box-shadow: 0 8px 24px rgba(0,0,0,.06); }
 }
 </style>
 </head>
@@ -520,9 +528,9 @@ a.rl:hover { color: var(--accent); }
     veggie: { t: "Veggie Plate", d: "Roman loves carrots.",
       ing: [{ h: null, i: ["Carrots", "Cucumbers", "Celery", "Red pepper", "Dip"] }],
       steps: [
-        "Cut up the vegetables.",
-        "Cut the carrots into sticks that aren’t a choking size, because Roman loves carrots.",
-        "Put everything on a plate with the dip."] },
+        "Cut all the vegetables into sticks that aren’t a choking size for a 2½ year old.",
+        "Put everything on a plate with the dip."],
+      notes: ["Colin will just recut them if you do it wrong. Don’t take it personally."] },
 
     gravyday: { t: "Mushroom Gravy, Day Of", d: "Finishing Colin’s mushroom gravy on Thanksgiving. The mushrooms are gourmet.",
       ing: [{ h: null, i: ["Reduced mushroom stock (from Colin)", "Butter", "3 tablespoons cornstarch", "6 tablespoons water or veggie stock"] }],
@@ -566,6 +574,47 @@ a.rl:hover { color: var(--accent); }
         "Gently fold together, adding more butter as needed to reach the desired consistency."],
       notes: ["Cream, herb, and butter amounts are flexible. Use either rosemary or sage."] }
   };
+  var TOOLS = {
+    soup: { need: "Tablespoon, teaspoon, ½ teaspoon, ½ cup and 1 cup measures.",
+      tips: ["One 32-ounce carton of stock is 4 cups, so 1½ cartons covers the 6 cups without measuring.",
+        "Measure the leeks, carrots, shallots and onions into one bowl, since they go in together.",
+        "Measure the oil before the honey so the honey slides off the spoon.",
+        "The butter is half a stick by the wrapper lines, and the ¼ cup of crème fraîche is 4 tablespoons."] },
+    turkey: { need: "Teaspoon, ½ teaspoon, tablespoon and one ¼ cup measure, plus an instant-read thermometer and a pastry brush.",
+      tips: ["The ¼ cup does everything, dry things first: 2 scoops of salt and 1 of brown sugar for the brine, then 1 more of brown sugar, the vinegar and the soy sauce straight into the glaze pan.",
+        "The butter is half a stick by the wrapper lines.",
+        "Wash the brining sheet while the turkey roasts and use it as the clean sheet for the flip."] },
+    pie: { need: "A kitchen scale is easiest, since every amount is in grams. Without one: 1 cup, ½ cup, ⅓ cup and ¼ cup measures, a tablespoon, and teaspoon, ½, ¼ and ⅛ teaspoon spoons.",
+      tips: ["With a scale, set the bowl on it, zero it, add, and zero again.",
+        "Melt the crust butter (¾ stick) in the skillet right after the coconut comes out.",
+        "Press the crust with the bottom of the 1-cup measure.",
+        "Use the ⅓ cup twice for the pumpkin, rinse it, then use it for the haupia water.",
+        "Measure the spices before the vanilla, and the cornstarch before the water."] },
+    yams: { need: "A ½ cup measure and a tablespoon.",
+      tips: ["The 12 tablespoons of butter is 1½ sticks.",
+        "Both sugars go into the one mixing bowl from the same ½ cup, back to back, then 1 tablespoon of cinnamon and half a tablespoon of nutmeg.",
+        "Then the same ½ cup measures the whiskey, three times, into the small pot.",
+        "Butter the casserole dish with the butter wrapper."] },
+    gravy: { need: "A tablespoon.",
+      tips: ["One 32-ounce carton is the 4 cups of stock, and the butter is ¾ stick.",
+        "To know when it’s down to 3 cups, first pour 3 cups of water into the pot and mark the level on a wooden spoon handle.",
+        "Use the one saucepan the whole way."] },
+    gravyday: { need: "One tablespoon.",
+      tips: ["Measure the 3 tablespoons of cornstarch while the spoon is dry, then the 6 tablespoons of water or stock, into the same small glass, and stir with a fork.",
+        "Cut the butter straight off the stick."] },
+    greenbean: { need: "A tablespoon, a ½ teaspoon and a 1 cup measure.",
+      tips: ["Shake the dressing in a mason jar, so you need no bowl or whisk.",
+        "Add lemon juice and vinegar first, then oil, then the honey with the oiled ½ teaspoon, and the mustard last.",
+        "Use the serving bowl as the ice bath, then drain the beans, dry the bowl and build the salad in it."] },
+    pineapple: { need: "One 1-cup measure.",
+      tips: ["Measure the sugar, then fill the same cup halfway with milk.",
+        "The butter is one stick. Melt it in the baking dish while the oven heats, which greases the dish too.",
+        "Mix everything in one big bowl."] },
+    mashed: { need: "No measuring.",
+      tips: ["Drain the potatoes and rice them back into the pot they boiled in, then strain the warm cream straight from its saucepan into it."] },
+    eggs: { need: "No measuring, since it’s all to taste.",
+      tips: ["Mash the yolks in one bowl, then pipe with a zip-top bag with a corner snipped off, so there’s no piping bag to wash."] }
+  };
   var lastTab = "menu", saved = {};
   function renderRecipe(k) {
     var R = RECIPES[k], box = document.getElementById("recipe");
@@ -582,30 +631,41 @@ a.rl:hover { color: var(--accent); }
       else src.append(document.createTextNode(R.src));
     }
     if (src.childNodes.length) box.append(src);
+    var T = TOOLS[k], body = el("div", "rbody" + (T ? " has-tools" : "")), main = el("div", "rmain");
+    if (T) {
+      var tl = el("aside", "rtools"); tl.setAttribute("aria-label", "Tools");
+      tl.append(el("h2", null, "Tools"), el("p", "rneed", T.need));
+      if (T.tips && T.tips.length) {
+        tl.append(el("h3", null, "Use fewer"));
+        var tu = el("ul", "rtips"); T.tips.forEach(function (x) { tu.append(el("li", null, x)); }); tl.append(tu);
+      }
+      body.append(tl);
+    }
+    body.append(main); box.append(body);
     var ing = el("section", "rsec ri" + (R.steps ? "" : " solo")); ing.append(el("h2", null, "Ingredients"));
     R.ing.forEach(function (g) {
       if (g.h) ing.append(el("h3", null, g.h));
       var ul = el("ul", "ringr"); g.i.forEach(function (x) { ul.append(el("li", null, x)); }); ing.append(ul);
     });
-    box.append(ing);
+    main.append(ing);
     if (R.steps) {
       var dir = el("section", "rsec rd"); dir.append(el("h2", null, "Directions"));
       if (R.stepsNote) dir.append(el("p", "rnote", R.stepsNote));
       var ol = el("ol", "rsteps"); R.steps.forEach(function (x) { ol.append(el("li", null, x)); }); dir.append(ol);
-      box.append(dir);
+      main.append(dir);
     }
     if (R.notes || R.card) {
       var n = el("section", "rsec"); n.append(el("h2", null, "Notes"));
       (R.notes || []).forEach(function (x) { n.append(el("p", "rnote", x)); });
       if (R.card) { n.append(el("h3", null, "The recipe card")); n.append(el("p", "rcard", R.card.join("\n"))); }
-      box.append(n);
+      main.append(n);
     }
     if (R.nutr) {
       var s = el("section", "rsec"); s.append(el("h2", null, "Nutrition"));
       if (R.nutrLabel) s.append(el("h3", null, R.nutrLabel));
       var dl = el("dl", "rnutr");
       R.nutr.forEach(function (p) { dl.append(el("dt", null, p[0]), el("dd", null, p[1])); });
-      s.append(dl); box.append(s);
+      s.append(dl); main.append(s);
     }
     var back2 = el("a", "back bottom", "← Back"); back2.href = "#" + lastTab; box.append(back2);
   }
