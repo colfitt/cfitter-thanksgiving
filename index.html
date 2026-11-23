@@ -148,6 +148,52 @@ ul { list-style: none; margin: 0; padding: 0; }
 a.rl { text-decoration: underline dotted; text-decoration-color: var(--faint); text-decoration-thickness: 1px; text-underline-offset: 5px; }
 .desc a.rl { text-underline-offset: 3px; }
 a.rl:hover { color: var(--accent); }
+/* Screens of every size: phones keep one column; iPads and laptops fill the width */
+.top { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); }
+.ri, .rd { min-width: 0; }
+@media (max-width: 640px) {
+  nav { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    gap: 22px; padding: 4px 24px 4px 0; scroll-padding-inline: 24px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); }
+  nav::-webkit-scrollbar { display: none; }
+  nav a { flex: none; }
+}
+@media (min-width: 768px) {
+  body { font-size: 18px; padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); padding-top: 32px; }
+  .sheet, .mini-in { max-width: 960px; }
+  .mini-in { padding-left: 32px; padding-right: 32px; }
+  .mini-menu { right: 32px; }
+  nav { justify-content: space-around; }
+  h1 { font-size: clamp(3.4rem, 7vw, 4.6rem); margin-bottom: 48px; }
+  .name { font-size: 1.42rem; }
+  .desc { font-size: 16.5px; }
+  .ing h3 { font-size: 1.35rem; }
+  #page-picks ul, #page-saturday ul { columns: 2; column-gap: 64px; }
+  #page-picks li, #page-saturday li { break-inside: avoid; }
+  #courses, .pies { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 64px; align-items: start; }
+  #courses section.course + section.course, .pies section.course + section.course { margin-top: 0; }
+  #lists, #pickup, #pizza-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; align-items: start; }
+  .ing #lists section:last-of-type, .ing #pickup section:last-of-type, .ing #pizza-lists section:last-of-type { border-bottom: 0; }
+  .diet, .plan { max-width: 720px; }
+  .recipe h1 { font-size: clamp(2.6rem, 5vw, 3.6rem); }
+}
+@media (min-width: 960px) {
+  #recipe { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: 64px; align-items: start; }
+  #recipe > * { grid-column: 1 / -1; }
+  #recipe > .ri { grid-column: 1; }
+  #recipe > .rd { grid-column: 2; }
+  #recipe > .ri.solo { grid-column: 1 / -1; }
+  #recipe > .back { justify-self: start; }
+}
+@media (min-width: 1200px) {
+  body { font-size: 19px; padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); }
+  .sheet, .mini-in { max-width: 1280px; }
+  .mini-in { padding-left: 48px; padding-right: 48px; }
+  .mini-menu { right: 48px; }
+  #page-picks ul, #page-saturday ul { columns: 3; }
+  #courses, .pies, #lists, #pickup, #pizza-lists { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #page-recipe { max-width: 1120px; margin: 0 auto; }
+}
 </style>
 </head>
 <body>
@@ -533,14 +579,14 @@ a.rl:hover { color: var(--accent); }
       else src.append(document.createTextNode(R.src));
     }
     if (src.childNodes.length) box.append(src);
-    var ing = el("section", "rsec"); ing.append(el("h2", null, "Ingredients"));
+    var ing = el("section", "rsec ri" + (R.steps ? "" : " solo")); ing.append(el("h2", null, "Ingredients"));
     R.ing.forEach(function (g) {
       if (g.h) ing.append(el("h3", null, g.h));
       var ul = el("ul", "ringr"); g.i.forEach(function (x) { ul.append(el("li", null, x)); }); ing.append(ul);
     });
     box.append(ing);
     if (R.steps) {
-      var dir = el("section", "rsec"); dir.append(el("h2", null, "Directions"));
+      var dir = el("section", "rsec rd"); dir.append(el("h2", null, "Directions"));
       if (R.stepsNote) dir.append(el("p", "rnote", R.stepsNote));
       var ol = el("ol", "rsteps"); R.steps.forEach(function (x) { ol.append(el("li", null, x)); }); dir.append(ol);
       box.append(dir);
@@ -674,6 +720,8 @@ a.rl:hover { color: var(--accent); }
       document.getElementById("page-" + k).hidden = k !== cur;
       document.getElementById("tab-" + k).setAttribute("aria-current", k === cur ? "page" : "false");
     });
+    var ct = document.getElementById("tab-" + cur), nv = ct.parentNode;
+    if (nv.scrollWidth > nv.clientWidth) nv.scrollLeft = Math.max(0, ct.offsetLeft - nv.offsetLeft - 24);
     var pg = document.getElementById("page-" + cur);
     pg.classList.remove("enter"); void pg.offsetWidth; pg.classList.add("enter");
     return y;
