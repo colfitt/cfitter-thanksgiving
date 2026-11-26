@@ -646,18 +646,19 @@ a.rl:hover { color: var(--accent); }
       tips: ["Mash the yolks in one bowl, then pipe with a zip-top bag with a corner snipped off, so there’s no piping bag to wash."] }
   };
   var GAME = [
-    { m: 660, t: "11:00", w: "Salt rub on", d: "Skip it if the turkey’s already brined.", rec: "turkey" },
+    { m: 660, t: "11:00", w: "Spice rub on, no salt", d: "It already had a 12 hour dry brine, so don’t rinse. Pepper, garlic powder, onion powder, brown sugar and smoked paprika. Pat the skin very dry, then back in the fridge uncovered.", rec: "turkey" },
     { m: 735, t: "12:15", w: "Oven to 425° and make the glaze", d: "Simmer the glaze 10 to 12 minutes, until it just barely coats a spoon.", rec: "turkey" },
+    { m: 705, t: "11:45", w: "Turkey out of the fridge", d: "Let it sit at room temperature.", rec: "turkey" },
     { m: 765, t: "12:45", w: "Turkey in", big: true, d: "425°, rubbed with oil, 1 cup water in the sheet.", rec: "turkey" },
     { m: 790, t: "1:10", w: "Drop to 300° and glaze", d: "Brush on glaze. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
     { m: 810, t: "1:30", w: "Glaze", rec: "turkey" },
     { m: 830, t: "1:50", w: "Glaze", rec: "turkey" },
     { m: 840, t: "2:00", w: "Turkey out", big: true, d: "Between 2:00 and 2:15, once the breast reads 150° and the thigh 170°. If it’s not there yet, glaze again at 2:10. Tent with foil and rest.", rec: "turkey" },
+    { m: 870, t: "2:30", w: "Finish Colin’s mushroom gravy", d: "While the turkey rests. Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
     { m: 885, t: "2:45", w: "Carve", rec: "turkey" },
     { m: 900, t: "3:00", w: "Eat", d: "Around 3." },
     { head: "Time to come" },
     { tbd: true, w: "Whiskey yams", rec: "yams" },
-    { tbd: true, w: "Reheat Colin’s mushroom gravy", rec: "gravyday" },
     { tbd: true, w: "Stuffin’ Muffs", d: "Bryan", rec: "muffs" }
   ];
   var lastTab = "menu", saved = {};
