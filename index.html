@@ -647,17 +647,17 @@ a.rl:hover { color: var(--accent); }
       tips: ["Mash the yolks in one bowl, then pipe with a zip-top bag with a corner snipped off, so there’s no piping bag to wash."] }
   };
   var GAME = [
-    { m: 660, t: "11:00", w: "Brie out of the fridge", d: "It needs 1½ hours out before cutting.", rec: "board" },
+    { m: 690, t: "11:30", w: "Brie out of the fridge", d: "It needs 1½ hours out before cutting.", rec: "board" },
     { m: 690, t: "11:30", w: "Turkey out of the fridge", at: "Counter", d: "Keep it uncovered in the fridge until then, then let it sit at room temperature.", rec: "turkey" },
-    { m: 690, t: "11:30", w: "Gouda out of the fridge", rec: "board" },
+    { m: 720, t: "12:00", w: "Gouda out of the fridge", rec: "board" },
     { m: 705, t: "11:45", w: "Peel and slice the yams", at: "Counter", d: "½-inch slices into a buttered casserole dish, then the butter and sugar mix on top.", rec: "yams" },
     { m: 720, t: "12:00", w: "Ovens on and make the glaze", at: "Top oven 425° · bottom oven 375° · burner 1", d: "Simmer the glaze 10 to 12 minutes, until it just barely coats a spoon.", rec: "turkey" },
-    { m: 720, t: "12:00", w: "Cut the cheese and the veggie sticks", at: "Counter", d: "Give the cheese time. Sticks that aren’t a choking size for Roman.", rec: "board" },
+    { m: 780, t: "1:00", w: "Cut the cheese and the veggie sticks", at: "Counter", d: "Give the cheese time. Sticks that aren’t a choking size for Roman.", rec: "board" },
     { m: 750, t: "12:30", w: "Turkey in", big: true, at: "Top oven, on its own · convection", d: "425°, rubbed with oil, 1 cup water in the sheet. Convection runs faster, so check the temperature early.", rec: "turkey" },
-    { m: 750, t: "12:30", w: "Apps out", at: "Table", d: "Charcuterie board, Deegs and the veggie plate. Eat these while the turkey and sides cook.", rec: "board" },
+    { m: 810, t: "1:30", w: "Apps out", at: "Table", d: "Charcuterie board, Deegs and the veggie plate. Eat these while the turkey and sides finish.", rec: "board" },
     { m: 765, t: "12:45", w: "Yams in, covered", at: "Bottom oven 375°", d: "30 minutes covered. Pour boiling whiskey over the craisins to soak.", rec: "yams" },
     { m: 775, t: "12:55", w: "Drop to 300° and glaze", at: "Top oven", d: "Once the skin is mostly golden. Brush on glaze. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
-    { m: 780, t: "1:00", w: "Peel the potatoes", at: "Counter", d: "Into a pot of cold water so they wait.", rec: "mashed" },
+    { m: 735, t: "12:15", w: "Peel the potatoes", at: "Counter", d: "Into a pot of cold water so they wait.", rec: "mashed" },
     { m: 795, t: "1:15", w: "Glaze, and start checking the temperature", at: "Top oven", d: "Convection may finish it early.", rec: "turkey" },
     { m: 795, t: "1:15", w: "Stir the yams, uncover", at: "Bottom oven", d: "15 to 20 minutes more.", rec: "yams" },
     { m: 815, t: "1:35", w: "Glaze", at: "Top oven", rec: "turkey" },
@@ -739,7 +739,7 @@ a.rl:hover { color: var(--accent); }
 
 
   var tl = document.getElementById("tl");
-  GAME.forEach(function (g) {
+  GAME.slice().sort(function (a, b) { return a.m - b.m; }).forEach(function (g) {
     var li = el("li", g.big ? "big" : g.tbd ? "tbd" : g.head ? "head" : null);
     if (g.head) { li.append(el("p", "what", g.head)); tl.append(li); return; }
     if (g.m != null) li.setAttribute("data-m", g.m);
