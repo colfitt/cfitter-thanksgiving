@@ -135,6 +135,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .tl .tm { font-family: var(--display); font-size: 1.3rem; line-height: 1.2; text-align: right; color: var(--soft); font-variant-numeric: lining-nums; white-space: nowrap; }
 .tl .what { font-family: var(--display); font-weight: 500; font-size: 1.32rem; line-height: 1.2; margin: 0; }
 .tl .det { font-size: 15.5px; color: var(--soft); margin: 4px 0 0; }
+.tl .at { font-variant: small-caps; text-transform: lowercase; letter-spacing: .12em; font-size: 14px; color: var(--faint); margin: 2px 0 0; }
 .tl .go { font-size: 14px; margin: 4px 0 0; color: var(--faint); }
 .tl li.big { padding: 12px 0 44px; }
 .tl li.big .tm, .tl li.big .what { color: var(--accent); font-size: clamp(1.9rem, 7vw, 2.6rem); line-height: 1.05; }
@@ -646,19 +647,21 @@ a.rl:hover { color: var(--accent); }
       tips: ["Mash the yolks in one bowl, then pipe with a zip-top bag with a corner snipped off, so there’s no piping bag to wash."] }
   };
   var GAME = [
-    { m: 705, t: "11:45", w: "Turkey out of the fridge", d: "Keep it uncovered in the fridge until then, then let it sit at room temperature.", rec: "turkey" },
-    { m: 735, t: "12:15", w: "Oven to 425° and make the glaze", d: "Simmer the glaze 10 to 12 minutes, until it just barely coats a spoon.", rec: "turkey" },
-    { m: 765, t: "12:45", w: "Turkey in", big: true, d: "425°, rubbed with oil, 1 cup water in the sheet.", rec: "turkey" },
-    { m: 790, t: "1:10", w: "Drop to 300° and glaze", d: "Brush on glaze. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
-    { m: 810, t: "1:30", w: "Glaze", rec: "turkey" },
-    { m: 830, t: "1:50", w: "Glaze", rec: "turkey" },
-    { m: 840, t: "2:00", w: "Turkey out", big: true, d: "Between 2:00 and 2:15, once the breast reads 150° and the thigh 170°. If it’s not there yet, glaze again at 2:10. Tent with foil and rest.", rec: "turkey" },
-    { m: 870, t: "2:30", w: "Finish Colin’s mushroom gravy", d: "While the turkey rests. Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
-    { m: 885, t: "2:45", w: "Carve", rec: "turkey" },
-    { m: 900, t: "3:00", w: "Eat", d: "Around 3." },
-    { head: "Time to come" },
-    { tbd: true, w: "Whiskey yams", rec: "yams" },
-    { tbd: true, w: "Stuffin’ Muffs", d: "Bryan", rec: "muffs" }
+    { m: 660, t: "11:00", w: "Brie out of the fridge", d: "It needs 1½ hours out before cutting.", rec: "board" },
+    { m: 690, t: "11:30", w: "Turkey out of the fridge", at: "Counter", d: "Keep it uncovered in the fridge until then, then let it sit at room temperature.", rec: "turkey" },
+    { m: 690, t: "11:30", w: "Gouda out of the fridge", rec: "board" },
+    { m: 720, t: "12:00", w: "Top oven to 425° and make the glaze", at: "Top oven · one burner", d: "Simmer the glaze 10 to 12 minutes, until it just barely coats a spoon.", rec: "turkey" },
+    { m: 735, t: "12:15", w: "Cut the veggie sticks and set up the apps", d: "Sticks that aren’t a choking size for Roman.", rec: "veggie" },
+    { m: 750, t: "12:30", w: "Turkey in", big: true, at: "Top oven, on its own · convection", d: "425°, rubbed with oil, 1 cup water in the sheet. Convection runs faster, so check the temperature early.", rec: "turkey" },
+    { m: 750, t: "12:30", w: "Apps out", at: "Table", d: "Charcuterie, the veggie plate and Deegs. Eat these while the turkey and sides cook.", rec: "board" },
+    { m: 775, t: "12:55", w: "Drop to 300° and glaze", at: "Top oven", d: "Once the skin is mostly golden. Brush on glaze. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
+    { m: 795, t: "1:15", w: "Glaze, and start checking the temperature", at: "Top oven", d: "Convection may finish it early.", rec: "turkey" },
+    { m: 815, t: "1:35", w: "Glaze", at: "Top oven", rec: "turkey" },
+    { m: 825, t: "1:45", w: "Turkey out", big: true, at: "Cutting board", d: "Between 1:45 and 2:00, once the breast reads 150° and the thigh 170°. If it’s not there yet, glaze again at 1:55. Tent with foil. It can rest up to an hour, so a late bird still makes 3.", rec: "turkey" },
+    { m: 825, t: "1:45", w: "Whiskey yams and Stuffin’ Muffs in", at: "Bottom oven", d: "Check time: about 1:45 to 2:30. The yams want 375°. They stay out of the turkey oven.", rec: "yams" },
+    { m: 860, t: "2:20", w: "Finish Colin’s mushroom gravy", at: "One burner", d: "While the turkey rests. Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
+    { m: 880, t: "2:40", w: "Carve", at: "Cutting board", d: "Microwave for any quick reheats, air fryer for anything small that needs crisping.", rec: "turkey" },
+    { m: 900, t: "3:00", w: "Eat", d: "Around 3." }
   ];
   var lastTab = "menu", saved = {};
   function renderRecipe(k) {
@@ -728,6 +731,7 @@ a.rl:hover { color: var(--accent); }
     if (g.m != null) li.setAttribute("data-m", g.m);
     var body = el("div");
     body.append(el("p", "what", g.w));
+    if (g.at) body.append(el("p", "at", g.at));
     if (g.d) body.append(el("p", "det", g.d));
     if (g.rec) { var go = el("p", "go"); go.append(recLink(g.rec, "Recipe")); body.append(go); }
     li.append(el("span", "tm", g.tbd ? "" : g.t), body); tl.append(li);
