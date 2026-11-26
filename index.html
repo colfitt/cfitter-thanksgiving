@@ -284,7 +284,6 @@ a.rl:hover { color: var(--accent); }
   <div id="page-game" class="menu game" hidden>
     <h1>Game Time</h1>
     <p class="sub">Thursday, November 26 · eating around 3</p>
-    <p class="sub note-who">Names are suggestions, so swap as you like.</p>
     <ol class="tl" id="tl"></ol>
   </div>
 
@@ -650,37 +649,37 @@ a.rl:hover { color: var(--accent); }
       tips: ["Mash the yolks in one bowl, then pipe with a zip-top bag with a corner snipped off, so there’s no piping bag to wash."] }
   };
   var GAME = [
-    { m: 690, t: "11:30", who: "Rachel", w: "Brie out of the fridge", d: "It needs 1½ hours out before cutting.", rec: "board" },
-    { m: 660, t: "11:00", who: "Colin", w: "Turkey out of the fridge", at: "Counter", d: "First thing, and everything follows from here. It sits at room temperature until it goes in, up to 2 hours, not a set 2 hours.", rec: "turkey" },
-    { m: 780, t: "1:00", who: "Rachel", w: "Hard cheeses out of the fridge", d: "30 minutes before the apps go out.", rec: "board" },
-    { m: 705, t: "11:45", who: "Ashley", w: "Peel and slice the yams", at: "Counter", d: "½-inch slices into a buttered casserole dish, then the butter and sugar mix on top.", rec: "yams" },
-    { m: 675, t: "11:15", who: "Sandy", w: "Make the glaze", at: "Burner 1", d: "Simmer 10 to 12 minutes, until it just barely coats a spoon, then set it aside.", rec: "turkey" },
-    { m: 720, t: "12:00", who: "Colin", w: "Ovens on", at: "Top oven 425° · bottom oven 375°", rec: "turkey" },
-    { m: 780, t: "1:00", who: "Chuck and Benny", w: "Cut the cheese and the veggie sticks", at: "Counter", d: "Give the cheese time. Sticks that aren’t a choking size for Roman.", rec: "board" },
-    { m: 750, t: "12:30", who: "Colin and Sandy", w: "Turkey in", big: true, at: "Top oven, on its own · convection", d: "425°, rubbed with oil, 1 cup water in the sheet. Convection runs faster, so check the temperature early.", rec: "turkey" },
-    { m: 810, t: "1:30", who: "Katie and Rachel", w: "Apps out", at: "Table", d: "Charcuterie board, Deegs and the veggie plate. Eat these while the turkey and sides finish.", rec: "board" },
-    { m: 810, t: "1:30", who: "Jeff", w: "Cocktails", at: "Table", d: "With the apps, while the turkey roasts." },
-    { m: 765, t: "12:45", who: "Ashley and Colin", w: "Yams in, covered", at: "Bottom oven 375°", d: "30 minutes covered. Pour boiling whiskey over the craisins to soak.", rec: "yams" },
-    { m: 775, t: "12:55", who: "Colin", w: "Drop to 300° and glaze", at: "Top oven", d: "Once the skin is mostly golden. Warm the glaze briefly, then brush it on. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
-    { m: 735, t: "12:15", who: "Benny", w: "Peel the potatoes", at: "Counter", d: "Into a pot of cold water so they wait.", rec: "mashed" },
-    { m: 795, t: "1:15", who: "Colin", w: "Glaze, and start checking the temperature", at: "Top oven", d: "Convection may finish it early.", rec: "turkey" },
-    { m: 795, t: "1:15", who: "Ashley", w: "Stir the yams, uncover", at: "Bottom oven", d: "15 to 20 minutes more.", rec: "yams" },
-    { m: 815, t: "1:35", who: "Colin", w: "Glaze", at: "Top oven", rec: "turkey" },
-    { m: 815, t: "1:35", who: "Bryan and Ashley", w: "Yams out, Stuffin’ Muffs in", at: "Bottom oven 375°", d: "Cover the yams to keep warm. Muffs bake about 20 to 25 minutes, check the box.", rec: "muffs" },
-    { m: 825, t: "1:45", who: "Colin and Sandy", w: "Turkey out", big: true, at: "Cutting board", d: "Between 1:45 and 2:00, once the breast reads 150° and the thigh 170°. If it’s not there yet, glaze again at 1:55. Tent with foil. It can rest up to an hour, so a late bird still makes 3.", rec: "turkey" },
-    { m: 825, t: "1:45", who: "Benny", w: "Potatoes on to boil", at: "Burner 2", d: "Usually 10 to 15 minutes until tender.", rec: "mashed" },
-    { m: 830, t: "1:50", who: "Jeff", w: "Top oven up to 425° for the Brussels sprouts", at: "Top oven", d: "There are a lot, so they roast on sheet pans here. The air fryer can crisp a small batch if they don’t all fit." },
-    { m: 830, t: "1:50", who: "Benny", w: "Warm the cream with garlic and herbs", at: "Burner 3", d: "Low heat, with some butter.", rec: "mashed" },
-    { m: 830, t: "1:50", who: "Sandy", w: "Soup on to reheat (check)", at: "Burner 4", d: "Low, stirring now and then.", rec: "soup" },
-    { m: 840, t: "2:00", who: "Jeff", w: "Brussels sprouts in", at: "Top oven 425°", d: "About 20 to 25 minutes, shaking the pans once." },
-    { m: 845, t: "2:05", who: "Laura and Bryan", w: "Muffs out, pineapple stuffing in to reheat", at: "Bottom oven", d: "It was made yesterday. About 20 to 25 minutes until hot.", rec: "pineapple" },
-    { m: 845, t: "2:05", who: "Benny", w: "Mash the potatoes", at: "Burner 2", d: "Rice or mash, strain in the warm cream, fold in butter. Lid on, lowest heat.", rec: "mashed" },
-    { m: 860, t: "2:20", who: "Colin", w: "Finish Colin’s mushroom gravy", at: "Burner 5", d: "Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
-    { m: 865, t: "2:25", who: "Jeff", w: "Brussels sprouts out", at: "Top oven" },
-    { m: 870, t: "2:30", who: "Laura", w: "Pineapple stuffing out, rolls in", at: "Bottom oven", d: "Rolls warm in their tin, about 10 minutes." },
-    { m: 880, t: "2:40", who: "Colin carves, Rachel sets out the salads", w: "Carve, and set out the salads", at: "Cutting board · table", d: "The green bean salad and the kale salad are made, so just set them out. Microwave for any quick reheats.", rec: "turkey" },
-    { m: 890, t: "2:50", who: "Katie", w: "Pies stay cold until dessert (check)" },
-    { m: 900, t: "3:00", who: "Everyone", w: "Eat", d: "Around 3." }
+    { m: 690, t: "11:30", w: "Brie out of the fridge", d: "It needs 1½ hours out before cutting.", rec: "board" },
+    { m: 660, t: "11:00", w: "Turkey out of the fridge", at: "Counter", d: "First thing, and everything follows from here. It sits at room temperature until it goes in, up to 2 hours, not a set 2 hours.", rec: "turkey" },
+    { m: 780, t: "1:00", w: "Hard cheeses out of the fridge", d: "30 minutes before the apps go out.", rec: "board" },
+    { m: 705, t: "11:45", w: "Peel and slice the yams", at: "Counter", d: "½-inch slices into a buttered casserole dish, then the butter and sugar mix on top.", rec: "yams" },
+    { m: 675, t: "11:15", w: "Make the glaze", at: "Burner 1", d: "Simmer 10 to 12 minutes, until it just barely coats a spoon, then set it aside.", rec: "turkey" },
+    { m: 720, t: "12:00", w: "Ovens on", at: "Top oven 425° · bottom oven 375°", rec: "turkey" },
+    { m: 780, t: "1:00", w: "Cut the cheese and the veggie sticks", at: "Counter", d: "Give the cheese time. Sticks that aren’t a choking size for Roman.", rec: "board" },
+    { m: 750, t: "12:30", w: "Turkey in", big: true, at: "Top oven, on its own · convection", d: "425°, rubbed with oil, 1 cup water in the sheet. Convection runs faster, so check the temperature early.", rec: "turkey" },
+    { m: 810, t: "1:30", w: "Apps out", at: "Table", d: "Charcuterie board, Deegs and the veggie plate. Eat these while the turkey and sides finish.", rec: "board" },
+    { m: 810, t: "1:30", w: "Cocktails", at: "Table", d: "With the apps, while the turkey roasts." },
+    { m: 765, t: "12:45", w: "Yams in, covered", at: "Bottom oven 375°", d: "30 minutes covered. Pour boiling whiskey over the craisins to soak.", rec: "yams" },
+    { m: 775, t: "12:55", w: "Drop to 300° and glaze", at: "Top oven", d: "Once the skin is mostly golden. Warm the glaze briefly, then brush it on. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
+    { m: 735, t: "12:15", w: "Peel the potatoes", at: "Counter", d: "Into a pot of cold water so they wait.", rec: "mashed" },
+    { m: 795, t: "1:15", w: "Glaze, and start checking the temperature", at: "Top oven", d: "Convection may finish it early.", rec: "turkey" },
+    { m: 795, t: "1:15", w: "Stir the yams, uncover", at: "Bottom oven", d: "15 to 20 minutes more.", rec: "yams" },
+    { m: 815, t: "1:35", w: "Glaze", at: "Top oven", rec: "turkey" },
+    { m: 815, t: "1:35", w: "Yams out, Stuffin’ Muffs in", at: "Bottom oven 375°", d: "Cover the yams to keep warm. Muffs bake about 20 to 25 minutes, check the box.", rec: "muffs" },
+    { m: 825, t: "1:45", w: "Turkey out", big: true, at: "Cutting board", d: "Between 1:45 and 2:00, once the breast reads 150° and the thigh 170°. If it’s not there yet, glaze again at 1:55. Tent with foil. It can rest up to an hour, so a late bird still makes 3.", rec: "turkey" },
+    { m: 825, t: "1:45", w: "Potatoes on to boil", at: "Burner 2", d: "Usually 10 to 15 minutes until tender.", rec: "mashed" },
+    { m: 830, t: "1:50", w: "Top oven up to 425° for the Brussels sprouts", at: "Top oven", d: "There are a lot, so they roast on sheet pans here. The air fryer can crisp a small batch if they don’t all fit." },
+    { m: 830, t: "1:50", w: "Warm the cream with garlic and herbs", at: "Burner 3", d: "Low heat, with some butter.", rec: "mashed" },
+    { m: 830, t: "1:50", w: "Soup on to reheat (check)", at: "Burner 4", d: "Low, stirring now and then.", rec: "soup" },
+    { m: 840, t: "2:00", w: "Brussels sprouts in", at: "Top oven 425°", d: "About 20 to 25 minutes, shaking the pans once." },
+    { m: 845, t: "2:05", w: "Muffs out, pineapple stuffing in to reheat", at: "Bottom oven", d: "It was made yesterday. About 20 to 25 minutes until hot.", rec: "pineapple" },
+    { m: 845, t: "2:05", w: "Mash the potatoes", at: "Burner 2", d: "Rice or mash, strain in the warm cream, fold in butter. Lid on, lowest heat.", rec: "mashed" },
+    { m: 860, t: "2:20", w: "Finish Colin’s mushroom gravy", at: "Burner 5", d: "Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
+    { m: 865, t: "2:25", w: "Brussels sprouts out", at: "Top oven" },
+    { m: 870, t: "2:30", w: "Pineapple stuffing out, rolls in", at: "Bottom oven", d: "Rolls warm in their tin, about 10 minutes." },
+    { m: 880, t: "2:40", w: "Carve, and set out the salads", at: "Cutting board · table", d: "The green bean salad and the kale salad are made, so just set them out. Microwave for any quick reheats.", rec: "turkey" },
+    { m: 890, t: "2:50", w: "Pies stay cold until dessert (check)" },
+    { m: 900, t: "3:00", w: "Eat", d: "Around 3." }
   ];
   var lastTab = "menu", saved = {};
   function renderRecipe(k) {
