@@ -145,6 +145,10 @@ ul { list-style: none; margin: 0; padding: 0; }
 .tl li.big .det { font-size: 17px; color: var(--ink); }
 .tl li.tbd .tm { font-style: italic; font-size: 1rem; color: var(--faint); padding-top: .25em; }
 .tl li.tbd::after { border-style: dashed; }
+.tl li.done > * { opacity: .45; }
+.tl li.done .what { text-decoration: line-through; text-decoration-thickness: 1px; }
+.tl li.done::after { background: var(--faint); border-color: var(--faint); opacity: .6; }
+.tl li.done .what::after { content: "done"; display: inline-block; text-decoration: none; font-family: var(--body); font-style: normal; font-variant: small-caps; letter-spacing: .14em; font-size: 14px; margin-left: 10px; color: var(--soft); border: 1px solid var(--faint); border-radius: 3px; padding: 0 6px 2px; vertical-align: middle; }
 .tl li.head { padding: 18px 0 22px; } .tl li.head::after { display: none; }
 .tl li.head .what { grid-column: 2; font-weight: 400; font-style: italic; color: var(--soft); font-size: 1.15rem; }
 .tl li.now .what::after { content: "now"; font-family: var(--body); font-style: normal; font-variant: small-caps; letter-spacing: .14em; font-size: 14px; color: var(--paper); background: var(--accent); border-radius: 3px; padding: 1px 7px 3px; margin-left: 10px; vertical-align: middle; }
@@ -649,44 +653,36 @@ a.rl:hover { color: var(--accent); }
       tips: ["Mash the yolks in one bowl, then pipe with a zip-top bag with a corner snipped off, so there’s no piping bag to wash."] }
   };
   var GAME = [
+    { m: 660, t: "11:00", done: true, w: "Turkey out of the fridge", at: "Counter", rec: "turkey" },
+    { m: 675, t: "11:15", done: true, w: "Make the glaze", at: "Burner 1", rec: "turkey" },
     { m: 690, t: "11:30", w: "Brie out of the fridge", d: "It needs 1½ hours out before cutting.", rec: "board" },
-    { m: 660, t: "11:00", w: "Turkey out of the fridge", at: "Counter", d: "First thing, and everything follows from here. It sits at room temperature until it goes in, up to 2 hours, not a set 2 hours.", rec: "turkey" },
-    { m: 695, t: "11:35", w: "Turkey breasts out of the fridge", at: "Counter", d: "They sit out with the turkey until they go in.", rec: "turkey" },
+    { m: 695, t: "11:35", done: true, w: "Turkey breasts out of the fridge", at: "Counter", rec: "turkey" },
+    { m: 700, t: "11:40", done: true, w: "Fill the Stuffin’ Muffs tins", at: "Counter", rec: "muffs" },
+    { m: 703, t: "11:43", done: true, w: "Cut the Brussels sprouts", at: "Counter", d: "They’re on a tray. Oil, salt and pepper them right before they go in." },
+    { m: 703, t: "11:43", done: true, w: "Peel, slice and top the yams", at: "Counter", rec: "yams" },
+    { m: 735, t: "12:15", done: true, w: "Peel the potatoes", at: "Counter", d: "They wait in water, in a pot in the fridge.", rec: "mashed" },
     { m: 780, t: "1:00", w: "Hard cheeses out of the fridge", d: "30 minutes before the apps go out.", rec: "board" },
-    { m: 700, t: "11:40", w: "Fill the Stuffin’ Muffs tins", at: "Counter", d: "Cover them and keep them in the fridge. They bake at 2:00, once the breast oven is up to 375°.", rec: "muffs" },
-    { m: 703, t: "11:43", w: "Cut the Brussels sprouts", at: "Counter", d: "They roast at 2:15, once the turkey oven is free." },
-    { m: 703, t: "11:43", w: "Peel and slice the yams", at: "Counter", d: "½-inch slices into a buttered casserole dish, then the butter and sugar mix on top.", rec: "yams" },
-    { m: 675, t: "11:15", w: "Make the glaze", at: "Burner 1", d: "Simmer 10 to 12 minutes, until it just barely coats a spoon, then set it aside.", rec: "turkey" },
-    { m: 720, t: "12:00", w: "Both ovens on, 425° convection", at: "Both ovens", d: "Same temperature in both. The turkey gets one oven and the breasts get the other, so each cooks evenly. Below they’re the turkey oven and the breast oven.", rec: "turkey" },
     { m: 780, t: "1:00", w: "Cut the cheese and the veggie sticks", at: "Counter", d: "Give the cheese time. Sticks that aren’t a choking size for Roman.", rec: "board" },
-    { m: 750, t: "12:30", w: "Turkey in", big: true, at: "Turkey oven 425° convection", d: "Rubbed with oil, 1 cup water in the sheet.", rec: "turkey" },
-    { m: 750, t: "12:30", w: "Turkey breasts in", big: true, at: "Breast oven 425° convection", d: "The two boneless breasts, 2.2 and 2.5 lb, go in with the bird. Brush them with glaze whenever the bird gets glazed, and put foil over anything browning too fast.", rec: "turkey" },
+    { m: 720, t: "12:00", done: true, w: "Both ovens on, 425° convection", at: "Both ovens", d: "The turkey gets one oven and the breasts get the other. Below they’re the turkey oven and the breast oven." },
+    { m: 789, t: "1:09", done: true, big: true, w: "Turkey and breasts in", at: "Both ovens 425° convection", rec: "turkey" },
     { m: 810, t: "1:30", w: "Apps out", at: "Table", d: "Charcuterie board, Deegs and the veggie plate. Eat these while the turkey and sides finish.", rec: "board" },
-    { m: 810, t: "1:30", w: "Start checking the turkey temp", at: "Turkey oven", d: "Convection runs fast. The bird comes out at 150° in the breast and 170° in the thigh.", rec: "turkey" },
-    { m: 795, t: "1:15", w: "Start checking the breast temps", at: "Breast oven", d: "In the thickest part of each one. They come out at 150° to 155°, so pull them if they get there early.", rec: "turkey" },
     { m: 810, t: "1:30", w: "Cocktails", at: "Table", d: "With the apps, while the turkey roasts." },
-    { m: 775, t: "12:55", w: "Both ovens down to 300° convection, and glaze", at: "Both ovens", d: "About 25 minutes after the turkey goes in, once the skin is mostly golden. Warm the glaze briefly, then brush it on. Add water by ½ cups to keep some liquid in the sheet.", rec: "turkey" },
-    { m: 775, t: "12:55", w: "Yams in, covered", at: "Breast oven 300°", d: "They cook slowly, covered, next to the breasts. Pour boiling whiskey over the craisins to soak.", rec: "yams" },
-    { m: 735, t: "12:15", w: "Peel the potatoes", at: "Counter", d: "Into a pot of cold water so they wait.", rec: "mashed" },
-    { m: 795, t: "1:15", w: "Glaze the bird and the breasts", at: "Both ovens", rec: "turkey" },
-    { m: 815, t: "1:35", w: "Glaze the bird and the breasts", at: "Both ovens", rec: "turkey" },
-    { m: 825, t: "1:45", w: "Turkey out", big: true, at: "Cutting board", d: "Between 1:45 and 2:00, once the breast reads 150° and the thigh 170°. If it’s not there yet, keep glazing every 20 minutes and leave it in. Tent with foil. It holds tented for up to an hour, and if it runs long it only needs 20 minutes of rest, so it can come out as late as 2:40 and still be carved by 3.", rec: "turkey" },
-    { m: 825, t: "1:45", w: "Potatoes on to boil", at: "Burner 2", d: "Usually 10 to 15 minutes until tender.", rec: "mashed" },
-    { m: 825, t: "1:45", w: "Turkey breasts out", big: true, at: "Cutting board", d: "Pull each one at 150° to 155° in the thickest part, likely between 1:30 and 1:50. Tent with foil, and they carve with the bird.", rec: "turkey" },
-    { m: 825, t: "1:45", w: "Breast oven up to 375°, uncover the yams", at: "Breast oven", d: "Once both breasts are out. Stir the yams and finish them uncovered, 15 to 20 minutes.", rec: "yams" },
-    { m: 845, t: "2:05", w: "Turkey oven up to 400° convection for the Brussels sprouts", at: "Turkey oven", d: "Once the turkey is out. There are a lot, so they roast on sheet pans here. The air fryer can crisp a small batch if they don’t all fit." },
-    { m: 830, t: "1:50", w: "Warm the cream with garlic and herbs", at: "Burner 3", d: "Low heat, with some butter.", rec: "mashed" },
-    { m: 870, t: "2:30", w: "Soup on to reheat", at: "Burner 4", d: "It’s already made. Low heat, stirring now and then, so it’s hot by 3.", rec: "soup" },
-    { m: 855, t: "2:15", w: "Brussels sprouts in", at: "Turkey oven 400° convection", d: "About 20 to 25 minutes, shaking the pans once." },
-    { m: 840, t: "2:00", w: "Stuffin’ Muffs and pineapple stuffing in", at: "Breast oven 375°", d: "Next to the yams. Muffs bake about 20 to 25 minutes, check the box. The pineapple stuffing was made yesterday and needs about 20 to 25 minutes to get hot.", rec: "muffs" },
-    { m: 845, t: "2:05", w: "Yams out", at: "Breast oven", d: "Cover them to keep warm.", rec: "yams" },
-    { m: 845, t: "2:05", w: "Mash the potatoes", at: "Burner 2", d: "Rice or mash, strain in the warm cream, fold in butter. Lid on, lowest heat.", rec: "mashed" },
-    { m: 860, t: "2:20", w: "Finish Colin’s mushroom gravy", at: "Burner 5", d: "Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
-    { m: 880, t: "2:40", w: "Brussels sprouts out", at: "Turkey oven" },
-    { m: 875, t: "2:35", w: "Rolls in", at: "Breast oven 375°", d: "Warm in their tin, about 10 minutes." },
-    { m: 865, t: "2:25", w: "Muffs and pineapple stuffing out", at: "Breast oven", d: "Cover to keep warm.", rec: "pineapple" },
-    { m: 885, t: "2:45", w: "Rolls out", at: "Breast oven" },
-    { m: 880, t: "2:40", w: "Carve, and set out the salads", at: "Cutting board · table", d: "The green bean salad and the kale salad are made, so just set them out. Microwave for any quick reheats.", rec: "turkey" },
+    { m: 830, t: "1:50", w: "Both ovens down to 300° convection, and glaze", at: "Both ovens", d: "If they’re still at 425°. Warm the glaze briefly, brush it on the bird and the breasts, and glaze again every 20 minutes.", rec: "turkey" },
+    { m: 830, t: "1:50", w: "Yams in, covered", at: "Breast oven", d: "Pour boiling whiskey over the craisins to soak.", rec: "yams" },
+    { m: 840, t: "2:00", big: true, w: "Turkey breasts out", at: "Cutting board", d: "Check from 2:00 and pull each one at 150° in the thickest part. Tent with foil, and they carve with the bird.", rec: "turkey" },
+    { m: 840, t: "2:00", w: "Breast oven up to 375°, uncover the yams", at: "Breast oven", d: "Once both breasts are out. Stir the yams.", rec: "yams" },
+    { m: 845, t: "2:05", w: "Muffs, pineapple stuffing and Brussels sprouts in", at: "Breast oven 375°", d: "Toss the Brussels with oil, salt and pepper first. 25 to 30 minutes, shaking the Brussels once. The air fryer takes any Brussels that don’t fit.", rec: "muffs" },
+    { m: 845, t: "2:05", w: "Potatoes on to boil", at: "Burner 2", d: "Straight from the fridge in their water. Bring to a boil, then 10 to 15 minutes until tender.", rec: "mashed" },
+    { m: 850, t: "2:10", w: "Glaze, and start checking the turkey temp", at: "Turkey oven", d: "It comes out at 150° in the breast and 170° in the thigh.", rec: "turkey" },
+    { m: 860, t: "2:20", w: "Warm the cream with garlic and herbs", at: "Burner 3", d: "Low heat, with some butter.", rec: "mashed" },
+    { m: 870, t: "2:30", big: true, w: "Turkey out", at: "Cutting board", d: "By 2:30, once the breast reads 150° and the thigh 170°. If it’s not there yet, glaze again and keep checking. Tent with foil and rest at least 20 minutes.", rec: "turkey" },
+    { m: 870, t: "2:30", w: "Rolls in", at: "Turkey oven", d: "In their tin, about 10 minutes." },
+    { m: 870, t: "2:30", w: "Soup on to reheat", at: "Burner 4", d: "It’s already made. Low heat, stirring now and then.", rec: "soup" },
+    { m: 875, t: "2:35", w: "Muffs, pineapple stuffing, Brussels and yams out", at: "Breast oven", d: "Cover to keep warm.", rec: "pineapple" },
+    { m: 880, t: "2:40", w: "Rolls out", at: "Turkey oven" },
+    { m: 880, t: "2:40", w: "Finish Colin’s mushroom gravy", at: "Burner 5", d: "Bring the 4 cups of reduced stock to a simmer. Whisk about 4 tbsp cornstarch into ¼ cup cold water and add it a little at a time until it’s thick enough. It thickens more as it sits.", rec: "gravyday" },
+    { m: 880, t: "2:40", w: "Mash the potatoes", at: "Burner 2", d: "Rice or mash, strain in the warm cream, fold in butter. Lid on, lowest heat.", rec: "mashed" },
+    { m: 890, t: "2:50", w: "Carve, and set out the salads", at: "Cutting board · table", d: "The green bean salad and the kale salad are made, so just set them out. Microwave for any quick reheats.", rec: "turkey" },
     { m: 890, t: "2:50", w: "Pies stay cold until dessert (check)" },
     { m: 900, t: "3:00", w: "Eat", d: "Around 3." }
   ];
@@ -754,8 +750,9 @@ a.rl:hover { color: var(--accent); }
   var tl = document.getElementById("tl");
   GAME.slice().sort(function (a, b) { return a.m - b.m; }).forEach(function (g) {
     var li = el("li", g.big ? "big" : g.tbd ? "tbd" : g.head ? "head" : null);
+    if (g.done) li.classList.add("done");
     if (g.head) { li.append(el("p", "what", g.head)); tl.append(li); return; }
-    if (g.m != null) li.setAttribute("data-m", g.m);
+    if (g.m != null && !g.done) li.setAttribute("data-m", g.m);
     var body = el("div");
     body.append(el("p", "what", g.w));
     if (g.who) body.append(el("p", "who", g.who));
